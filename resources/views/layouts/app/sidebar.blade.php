@@ -4,7 +4,67 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+
+        <flux:sidebar sticky stashable class="bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700">
+
+    <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+
+    <div class="px-4 py-5 border-b border-zinc-200 dark:border-zinc-700">
+        <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">School HRMS</p>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
+    </div>
+
+    <flux:navlist class="mt-4 px-2">
+
+        <flux:navlist.item icon="home" href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">
+            Dashboard
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="users" href="{{ route('employees.index') }}" :current="request()->routeIs('employees.*')">
+            Employees
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="document-text" href="{{ route('contracts.index') }}" :current="request()->routeIs('contracts.*')">
+            Contracts
+        </flux:navlist.item>
+
+        {{-- <flux:navlist.item icon="calendar-days" href="{{ route('leaves.index') }}" :current="request()->routeIs('leaves.*')">
+            Leave
+        </flux:navlist.item> --}}
+
+        {{-- <flux:navlist.group heading="Time management" expandable>
+            <flux:navlist.item icon="arrow-up-tray" href="{{ route('time.import') }}" :current="request()->routeIs('time.import')">
+                Import attendance
+            </flux:navlist.item>
+            <flux:navlist.item icon="clock" href="{{ route('time.attendance') }}" :current="request()->routeIs('time.attendance')">
+                Attendance
+            </flux:navlist.item>
+            <flux:navlist.item icon="exclamation-triangle" href="{{ route('time.incidents') }}" :current="request()->routeIs('time.incidents')">
+                Incidents
+            </flux:navlist.item>
+            <flux:navlist.item icon="arrow-right-left" href="{{ route('time.movements') }}" :current="request()->routeIs('time.movements')">
+                1–2PM movements
+            </flux:navlist.item>
+        </flux:navlist.group> --}}
+
+        {{-- @if(auth()->user()->isSuperAdmin())
+        <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}" :current="request()->routeIs('users.*')">
+            User management
+        </flux:navlist.item>
+        @endif --}}
+
+    </flux:navlist>
+
+    <div class="mt-auto px-4 py-4 border-t border-zinc-200 dark:border-zinc-700">
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ auth()->user()->name }}</p>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button class="text-xs text-zinc-400 hover:text-red-500 mt-1">Sign out</button>
+        </form>
+    </div>
+
+</flux:sidebar>
+        {{-- <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.header>
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
@@ -31,10 +91,10 @@
             </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
-        </flux:sidebar>
+        </flux:sidebar> --}}
 
         <!-- Mobile User Menu -->
-        <flux:header class="lg:hidden">
+        {{-- <flux:header class="lg:hidden">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
@@ -86,7 +146,7 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
-        </flux:header>
+        </flux:header> --}}
 
         {{ $slot }}
 
