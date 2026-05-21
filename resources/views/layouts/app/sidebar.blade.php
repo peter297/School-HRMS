@@ -28,11 +28,11 @@
             Contracts
         </flux:navlist.item>
 
-        {{-- <flux:navlist.item icon="calendar-days" href="{{ route('leaves.index') }}" :current="request()->routeIs('leaves.*')">
+        <flux:navlist.item icon="calendar-days" href="{{ route('leaves.index') }}" :current="request()->routeIs('leaves.*')">
             Leave
-        </flux:navlist.item> --}}
+        </flux:navlist.item> 
 
-        {{-- <flux:navlist.group heading="Time management" expandable>
+       <flux:navlist.group heading="Time management" expandable>
             <flux:navlist.item icon="arrow-up-tray" href="{{ route('time.import') }}" :current="request()->routeIs('time.import')">
                 Import attendance
             </flux:navlist.item>
@@ -42,10 +42,10 @@
             <flux:navlist.item icon="exclamation-triangle" href="{{ route('time.incidents') }}" :current="request()->routeIs('time.incidents')">
                 Incidents
             </flux:navlist.item>
-            <flux:navlist.item icon="arrow-right-left" href="{{ route('time.movements') }}" :current="request()->routeIs('time.movements')">
-                1–2PM movements
+            <flux:navlist.item icon="arrow-left-end-on-rectangle"  href="{{ route('time.movements') }}" :current="request()->routeIs('time.movements')">
+                Movements
             </flux:navlist.item>
-        </flux:navlist.group> --}}
+        </flux:navlist.group>
 
         {{-- @if(auth()->user()->isSuperAdmin())
         <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}" :current="request()->routeIs('users.*')">

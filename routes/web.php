@@ -1,6 +1,11 @@
 <?php
 
 use App\Livewire\Dashboard;
+use App\Livewire\Leaves\Index;
+use App\Livewire\Time\Attendance;
+use App\Livewire\Time\Import;
+use App\Livewire\Time\Incidents;
+use App\Livewire\Time\Movements;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -19,6 +24,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/employees/{employee}/edit', fn() => view('employees.edit'))->name('employees.edit');
 
         Route::get('/contracts', App\Livewire\Contracts\Index::class)->name('contracts.index');
+
+        Route::get('/leaves', Index::class)->name('leaves.index');
+
+        Route::get('/time/import', Import::class)->name('time.import');
+        Route::get('/time/attendance', Attendance::class)->name('time.attendance');
+        Route::get('/time/incidents', Incidents::class)->name('time.incidents');
+        Route::get('/time/movements', Movements::class)->name('time.movements');
 
     });
 });
