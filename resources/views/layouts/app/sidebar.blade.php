@@ -30,7 +30,7 @@
 
         <flux:navlist.item icon="calendar-days" href="{{ route('leaves.index') }}" :current="request()->routeIs('leaves.*')">
             Leave
-        </flux:navlist.item> 
+        </flux:navlist.item>
 
        <flux:navlist.group heading="Time management" expandable>
             <flux:navlist.item icon="arrow-up-tray" href="{{ route('time.import') }}" :current="request()->routeIs('time.import')">
@@ -62,6 +62,8 @@
             <button class="text-xs text-zinc-400 hover:text-red-500 mt-1">Sign out</button>
         </form>
     </div>
+
+
 
 </flux:sidebar>
         {{-- <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
@@ -149,6 +151,8 @@
         </flux:header> --}}
 
         {{ $slot }}
+
+         <flux:toast position="top end" />
 
         @persist('toast')
             <flux:toast.group>

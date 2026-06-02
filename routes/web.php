@@ -1,11 +1,15 @@
 <?php
 
 use App\Livewire\Dashboard;
+use App\Livewire\Employees\Create;
+use App\Livewire\Employees\Edit;
+use App\Livewire\Employees\Index as EmployeesIndex;
 use App\Livewire\Leaves\Index;
 use App\Livewire\Time\Attendance;
 use App\Livewire\Time\Import;
 use App\Livewire\Time\Incidents;
 use App\Livewire\Time\Movements;
+use App\Models\Employees;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -17,11 +21,11 @@ Route::get('/', fn() => redirect()->route('login'));
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
-    // HR Admin and Supper Admin Routes
+    // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
-        Route::get('/employees', fn() => view('employees.index'))->name('employees.index');
-        Route::get('/employees/create', fn() => view('employees.create'))->name('employees.create');
-        Route::get('/employees/{employee}/edit', fn() => view('employees.edit'))->name('employees.edit');
+        Route::get('/employees', EmployeesIndex::class)->name('employees.index');
+        Route::get('/employees/create', Create::class)->name('employees.create');
+        Route::get('/employees/{employee}/edit', Edit::class)->name('employees.edit');
 
         Route::get('/contracts', App\Livewire\Contracts\Index::class)->name('contracts.index');
 

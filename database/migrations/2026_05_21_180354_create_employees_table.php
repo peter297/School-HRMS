@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('job_title')->nullable();
             $table->date('date_of_joining');
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
-            $table->string('national_id')->unique();
+            $table->string('national_id')->default('')->change();
             $table->string('kra_pin')->unique()->nullable();
             $table->string('nssf_number')->unique()->nullable();
             $table->string('sha_number')->unique()->nullable();

@@ -66,7 +66,7 @@ class User extends Authenticatable
     {
         return $this->role === 'hr_admin';
     }
-    
+
     public function isStaff(): bool
     {
         return $this->role === 'staff';
@@ -77,7 +77,7 @@ class User extends Authenticatable
     }
 
     public function employees(){
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employees::class);
 
     }
 }
