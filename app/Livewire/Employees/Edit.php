@@ -23,7 +23,7 @@ class Edit extends Component
     public string $date_of_joining = '';
     public string $gender          = '';
     public string $national_id     = '';
-    public string $employment_status          = 'active';
+    public string $employment_status  = 'active';
 
     public function mount(Employees $employee): void
     {
@@ -39,7 +39,7 @@ class Edit extends Component
         $this->date_of_joining = $employee->date_of_joining->format('Y-m-d');
         $this->gender          = $employee->gender ?? '';
         $this->national_id     = $employee->national_id ?? '';
-        $this->employment_status          = $employee->employment_status;
+        $this->employment_status = $employee->employment_status;
     }
 
     protected function rules(): array
@@ -51,7 +51,7 @@ class Edit extends Component
             'email'           => "nullable|email|unique:employees,email,{$this->employee->id}",
             'phone'           => 'nullable|string|max:20',
             'staff_type'      => 'required|in:teacher,admin,support_staff',
-            'division'        => 'required|in:eye,upper_primary,junior_school,administration,support',
+            'division'        => 'required|in:eye,upper_primary,junior_school,administration,support_services',
             'job_title'       => 'nullable|string|max:100',
             'date_of_joining' => 'required|date',
             'gender'          => 'nullable|in:male,female,other',

@@ -41,11 +41,11 @@
                         <flux:select.option value="support_staff">Support Staff</flux:select.option>
                     </flux:select>
                     <flux:select wire:model="division" label="Division" required>
-                        <flux:select.option value="eye">Early Years Education</flux:select.option>
+                        <flux:select.option value="eye">EYE</flux:select.option>
                         <flux:select.option value="upper_primary">Upper Primary</flux:select.option>
                         <flux:select.option value="junior_school">Junior School</flux:select.option>
                         <flux:select.option value="administration">Administration</flux:select.option>
-                        <flux:select.option value="support">Support</flux:select.option>
+                        <flux:select.option value="support_services">Support</flux:select.option>
                     </flux:select>
                     <flux:input wire:model="job_title" label="Job title" />
                     <flux:input wire:model="date_of_joining" type="date" label="Date of joining" required />

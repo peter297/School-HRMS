@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+       
            Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employees_id')->constrained('employees')->onDelete('cascade');
@@ -31,6 +32,8 @@ return new class extends Migration
             $table->softDeletes();
         });
     }
+
+   
 
     /**
      * Reverse the migrations.

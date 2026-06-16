@@ -32,7 +32,7 @@ use Flux\Flux;
             'email'           => 'nullable|email|unique:employees,email',
             'phone'           => 'nullable|string|max:20',
             'staff_type'      => 'required|in:teacher,admin,support_staff',
-            'division'        => 'required|in:eye,upper_primary,junior_school,administration,support',
+            'division'        => 'required|in:eye,upper_primary,junior_school,administration,support-services',
             'job_title'       => 'nullable|string|max:100',
             'date_of_joining' => 'required|date',
             'gender'          => 'nullable|in:male,female,other',

@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/employees/{employee}/edit', Edit::class)->name('employees.edit');
 
         Route::get('/contracts', App\Livewire\Contracts\Index::class)->name('contracts.index');
+        Route::get('/contracts/create', \App\Livewire\Contracts\Create::class)->name('contracts.create');
+        Route::get('/contracts/{contract}/edit', \App\Livewire\Contracts\Edit::class)->name('contracts.edit');
 
         Route::get('/leaves', Index::class)->name('leaves.index');
 
