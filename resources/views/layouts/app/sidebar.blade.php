@@ -5,8 +5,7 @@
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
 
-        <flux:sidebar sticky stashable class="bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700">
-
+<flux:sidebar sticky stashable class="bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
     <div class="px-4 py-5 border-b border-zinc-200 dark:border-zinc-700">
@@ -93,10 +92,10 @@
             </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
-        </flux:sidebar> --}}
+        </flux:sidebar>   --}}
 
         <!-- Mobile User Menu -->
-        {{-- <flux:header class="lg:hidden">
+        <flux:header class="lg:hidden">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
@@ -126,11 +125,11 @@
 
                     <flux:menu.separator />
 
-                    <flux:menu.radio.group>
+                    {{-- <flux:menu.radio.group>
                         <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                             {{ __('Settings') }}
                         </flux:menu.item>
-                    </flux:menu.radio.group>
+                    </flux:menu.radio.group> --}}
 
                     <flux:menu.separator />
 
@@ -148,7 +147,7 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
-        </flux:header> --}}
+        </flux:header>
 
         {{ $slot }}
 

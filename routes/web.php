@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/contracts/{contract}/edit', \App\Livewire\Contracts\Edit::class)->name('contracts.edit');
 
         Route::get('/leaves', Index::class)->name('leaves.index');
+        Route::get('/leaves/create',      \App\Livewire\Leaves\Create::class)->name('leaves.create');
+        // Route::get('/leaves/{leave}',     \App\Livewire\Leaves\Show::class)->name('leaves.show');
 
         Route::get('/time/import', Import::class)->name('time.import');
         Route::get('/time/attendance', Attendance::class)->name('time.attendance');
