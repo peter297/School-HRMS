@@ -33,6 +33,8 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         # Exclude environment files and local nodes so you don't overwrite server configs
+        dangerous-clean-ssl: true
+        timeout: 600000
         exclude: |
           **/.git*
           **/.git*/**
