@@ -20,6 +20,7 @@ class Employees extends Model
         'phone',
         'staff_type',
         'division',
+        'branch',
         'job_title',
         'date_of_joining',
         'gender',
@@ -45,10 +46,10 @@ class Employees extends Model
         return $this->hasMany(Contract::class);
     }
 
-    // public function leaves()
-    // {
-    //     return $this->hasMany(Leave::class);
-    // }
+    public function leaves()
+    {
+        return $this->hasMany(Leaves::class);
+    }
 
     // public function attendanceLogs()
     // {
@@ -68,6 +69,17 @@ class Employees extends Model
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getBranchLabelAttribute(): string{
+
+    return match($this->branch){
+        'juja_road' => 'Juja Road',
+        'kitisuru' => 'Kitisuru',
+        'south_c' => 'South C',
+        default => ucfirst($this->branch),
+
+    };
     }
 
 
