@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/contracts/create', \App\Livewire\Contracts\Create::class)->name('contracts.create');
         Route::get('/contracts/{contract}/edit', \App\Livewire\Contracts\Edit::class)->name('contracts.edit');
 
+       
+
         Route::get('/leaves', Index::class)->name('leaves.index');
         Route::get('/leaves/create',      \App\Livewire\Leaves\Create::class)->name('leaves.create');
         Route::get('/leaves/{leave}',     \App\Livewire\Leaves\Show::class)->name('leaves.show');
@@ -42,3 +44,5 @@ Route::middleware('auth')->group(function () {
 
     });
 });
+
+require __DIR__.'/settings.php';
