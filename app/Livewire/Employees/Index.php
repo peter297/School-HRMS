@@ -19,9 +19,15 @@ class Index extends Component
     public string $filterType = '';
     public string $filterDivision = '';
     public string $filterStatus = '';
+
+    public string $filterBranch = '';
     public string $sortBy = 'first_name';
     public string $sortDirection = 'asc';
 
+    public array $selectedIds = [];
+
+    public bool $selectAll = false;
+    
     public int $perPage = 10;
     protected $queryString = [
 

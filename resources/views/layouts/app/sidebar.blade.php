@@ -11,11 +11,11 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <div class="px-4 py-5 border-b border-zinc-200 dark:border-zinc-700">
-            <div class="flex flex-row justify-between h-10 w-10  rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2 mb-2 mx-2">
+            <div class="flex flex-row justify-between h-10 w-10  rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2 mb-2">
                 <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Alameen Academy HRMS') }} Logo" class="h-10 w-auto" />
 
             </div>
-             <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 ml-2">Alameen Academy HRMS</p>
+             <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
         </div>
 
