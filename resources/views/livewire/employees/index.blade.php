@@ -232,7 +232,7 @@
                 <p><strong>staff_type:</strong> teacher_eye · teacher_upper_primary · teacher_junior · admin · support_staff</p>
                 <p><strong>division:</strong> eye · upper_primary · junior_school · administration · support</p>
                 <p><strong>branch:</strong> juja_road · kitisuru · south_c</p>
-                <p><strong>gender:</strong> male · female · other</p>
+                <p><strong>gender:</strong> male · female </p>
                 <p><strong>status:</strong> active · inactive · on_leave</p>
                 <p><strong>date_of_joining:</strong> dd/mm/yyyy</p>
             </div>
