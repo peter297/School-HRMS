@@ -40,6 +40,12 @@
                         <flux:select.option value="admin">Admin</flux:select.option>
                         <flux:select.option value="support_staff">Support Staff</flux:select.option>
                     </flux:select>
+                    <flux:select wire:model="branch" label="Branch" required>
+                        <flux:select.option value="">Select branch…</flux:select.option>
+                        <flux:select.option value="juja_road">Juja Road</flux:select.option>
+                        <flux:select.option value="kitisuru">Kitisuru</flux:select.option>
+                        <flux:select.option value="south_c">South C</flux:select.option>
+                    </flux:select>
                     <flux:select wire:model="division" label="Division" required>
                         <flux:select.option value="eye">EYE</flux:select.option>
                         <flux:select.option value="upper_primary">Upper Primary</flux:select.option>
