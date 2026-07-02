@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EmployeesSeeder::class,
             LeaveTypesSeeder::class,
+            SchedulesSeeder::class,
         ]);
     }
 }

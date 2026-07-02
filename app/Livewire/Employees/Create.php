@@ -9,17 +9,19 @@ use Livewire\Component;
 class Create extends Component
 {
     public string $staff_number      = '';
-    public string $first_name        = '';
-    public string $last_name         = '';
-    public string $email             = '';
-    public string $phone             = '';
-    public string $staff_type        = '';
-    public string $division          = '';
-    public string $job_title         = '';
-    public string $date_of_joining   = '';
-    public string $gender            = '';
-    public string $national_id       = '';
-    public string $employment_status = 'active';
+public string $first_name        = '';
+public string $last_name         = '';
+public string $email             = '';
+public string $phone             = '';
+public string $staff_type        = '';
+public string $division          = '';
+public string $branch            = '';
+public string $job_title         = '';
+public string $date_of_joining   = '';
+public string $gender            = '';
+public string $national_id       = '';
+public string $employment_status = 'active';
+
 
     protected function rules(): array
     {
