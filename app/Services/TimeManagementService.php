@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AttendanceLogs;
 use App\Models\AttendanceRecords;
+use App\Models\Employees;
 use App\Models\Incidents;
 use App\Models\PermittedExits;
 use App\Models\Schedules;
@@ -15,7 +16,7 @@ class TimeManagementService
      * Create a new class instance.
      */
 
-    public function processLog(AttendanceLogs $log) AttendanceRecords
+    public function processLog(AttendanceLogs $log) : AttendanceRecords
     {
         // Process the attendance log
         // Implement your logic here
@@ -24,7 +25,7 @@ class TimeManagementService
 
         $schedule = Schedules::where('staff_type', $employee->staff_type)->first();
 
-        if(!schedule) {
+        if(!$schedule) {
             // Handle the case when no schedule is found for the employee's staff type
             return $this->markAbsent($log, $employee);
         }
@@ -85,7 +86,7 @@ class TimeManagementService
                 'attendance_log_id' => $log->id,
                 'status' => $status,
                 'minutes_late' => $minutesLate,
-                'minutes_early' => $minutesEarly,   
+                'minutes_early' => $minutesEarly,
                 'flagged' => $flagged,
             ]
         );
@@ -102,7 +103,7 @@ class TimeManagementService
                     'type' => $status,
                     'minutes_late' => $minutesLate,
                     'minutes_early' => $minutesEarly,
-                    'details' => $details,  
+                    'details' => $details,
                     'resolved' => false,
                 ]
             );
@@ -111,9 +112,50 @@ class TimeManagementService
         return $record;
 
     }
-    public function __construct()
+
+    public function markAbsent(AttendanceLogs $log, Employees $employee): AttendanceRecords
     {
-        //
+        $record = AttendanceRecords::updateOrCreate(
+            [
+                'employee_id' => $employee->id,
+                'date' => $log->date,
+            ],
+            [
+                'attendance_log_id' => $log->id,
+                'status' => 'Absent',
+                'minutes_late' => null,
+                'minutes_early' => null,
+                'flagged' => true,
+            ]
+        );
+
+        Incidents::updateOrCreate(
+            [
+                'employee_id' => $employee->id,
+                'date' => $log->date,
+            ],
+            [
+                'type' => 'Absent',
+                'minutes_late' => null,
+                'minutes_early' => null,
+                'details' => 'Employee was absent on this date.',
+                'resolved' => false,
+            ]
+        );
+
+        Incidents::updateOrCreate(
+            [
+                'employee_id' => $employee->id,
+                'date' => $log->date,
+
+            ],
+            [
+                'type' => 'Absent',
+                'details' => 'Employee was absent on this date.',
+            ]
+        );
+
+        return $record;
     }
 
     public function processBatch(string $batch): int{
@@ -131,7 +173,45 @@ class TimeManagementService
     public function markMissingAsAbsent(string $date): int{
 
     $carbon = Carbon::parse($date);
-    if($carbon->isWeekend()){
-        return 0;
+    if($carbon->isWeekend())return 0;
+
+    $count = 0;
+
+    Employees::where('status', 'active')->each(function (Employees $employee) use ($date, &$count){
+        $hasLog = AttendanceLogs::where('employee_id', $employee->id)
+            ->whereDate('date', $date)
+            ->exists();
+
+        if(!$hasLog){
+            $log = AttendanceLogs::create([
+                'employee_id' => $employee->id,
+                'date' => $date,
+                'check_in' => null,
+                'check_out' => null,
+                'source' => 'system',
+                'import_batch' => 'absent_' . $date,
+            ]);
+
+            $this->markAbsent($log, $employee);
+            $count++;
+        }
+    });
+
+    return $count;
+
+    }
+
+    public function buildIncidentDetails(bool $isLate, bool $isEarly, int $minutesLate, int $minutesEarly, ?Carbon $checkIn, ?Carbon $checkOut, Carbon $expectedIn, Carbon $expectedOut): string{
+        $parts = [];
+
+        if($isLate){
+            $parts[] = "Late by {$minutesLate} minutes. Checked in at {$checkIn->format('H:i')} instead of expected {$expectedIn->format('H:i')}.";
+        }
+
+        if($isEarly){
+            $parts[] = "Left early by {$minutesEarly} minutes. Checked out at {$checkOut->format('H:i')} instead of expected {$expectedOut->format('H:i')}.";
+        }
+
+        return implode(' ', $parts);
     }
 }

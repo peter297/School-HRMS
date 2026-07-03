@@ -51,20 +51,20 @@ class Employees extends Model
         return $this->hasMany(Leaves::class);
     }
 
-    // public function attendanceLogs()
-    // {
-    //     return $this->hasMany(AttendanceLog::class);
-    // }
+    public function attendanceLogs()
+    {
+        return $this->hasMany(AttendanceLogs::class);
+    }
 
-    // public function permittedExits()
-    // {
-    //     return $this->hasMany(PermittedExit::class);
-    // }
+    public function permittedExits()
+    {
+        return $this->hasMany(PermittedExits::class);
+    }
 
-    // public function incidents()
-    // {
-    //     return $this->hasMany(Incident::class);
-    // }
+    public function incidents()
+    {
+        return $this->hasMany(Incidents::class);
+    }
 
     public function getFullNameAttribute()
     {
