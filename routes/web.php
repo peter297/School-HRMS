@@ -9,7 +9,7 @@ use App\Livewire\Time\Attendance;
 use App\Livewire\Time\Import;
 use App\Livewire\Time\Incidents;
 use App\Livewire\Time\Movements;
-use App\Models\Employees;
+use App\Models\Schedules;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/contracts/create', \App\Livewire\Contracts\Create::class)->name('contracts.create');
         Route::get('/contracts/{contract}/edit', \App\Livewire\Contracts\Edit::class)->name('contracts.edit');
 
-       
+
 
         Route::get('/leaves', Index::class)->name('leaves.index');
         Route::get('/leaves/create',      \App\Livewire\Leaves\Create::class)->name('leaves.create');
@@ -41,6 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/time/attendance', Attendance::class)->name('time.attendance');
         Route::get('/time/incidents', Incidents::class)->name('time.incidents');
         Route::get('/time/movements', Movements::class)->name('time.movements');
+
+        // Route::get('/time/schedules', Schedules::class)->name('time.schedules');
+
 
     });
 });

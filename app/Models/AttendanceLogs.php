@@ -20,9 +20,9 @@ class AttendanceLogs extends Model
     ];
 
     protected $casts = [
-        'date' => 'date',
-        'check_in' => 'datetime:H:i:s',
-        'check_out' => 'datetime:H:i:s',
+        'date' => 'date: Y-m-d',
+        'check_in' => 'string',
+        'check_out' => 'string',
     ];
 
     public function employee()

@@ -32,16 +32,18 @@ class TimeManagementService
 
         $date = $log->date;
 
-        $expectedIn = Carbon::parse($date->format('d-m-Y') . ' ' . $schedule->expected_in);
-        $expectedOut = Carbon::parse($date->format('d-m-Y') . ' ' . $schedule->expected_out);
+
+
+        $expectedIn = Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->expected_in);
+        $expectedOut = Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->expected_out);
         $graceIn = (clone $expectedIn)->addMinutes($schedule->grace_minutes);
         $graceOut = (clone $expectedOut)->addMinutes($schedule->grace_minutes);
 
-        $checkIn = $log->check_in ? Carbon::parse($date->format('d-m-Y') . ' ' . $log->check_in) : null;
-        $checkOut = $log->check_out ? Carbon::parse($date->format('d-m-Y') . ' ' . $log->check_out) : null;
+        $checkIn = $log->check_in ? Carbon::parse($date->format('Y-m-d') . ' ' . $log->check_in) : null;
+        $checkOut = $log->check_out ? Carbon::parse($date->format('Y-m-d') . ' ' . $log->check_out) : null;
 
         $permittedExit = PermittedExits::where('employee_id', $employee->id)
-            ->whereDate('exit_date', $date)
+            ->whereDate('date', $date)
             ->first();
 
         $minutesLate = 0;
@@ -85,8 +87,8 @@ class TimeManagementService
             [
                 'attendance_log_id' => $log->id,
                 'status' => $status,
-                'minutes_late' => $minutesLate,
-                'minutes_early' => $minutesEarly,
+                'minutes_late' => (int)$minutesLate,
+                'minutes_early' => (int)$minutesEarly,
                 'flagged' => $flagged,
             ]
         );
@@ -101,8 +103,8 @@ class TimeManagementService
                 ],
                 [
                     'type' => $status,
-                    'minutes_late' => $minutesLate,
-                    'minutes_early' => $minutesEarly,
+                    'minutes_late' => (int)$minutesLate,
+                    'minutes_early' => (int)$minutesEarly,
                     'details' => $details,
                     'resolved' => false,
                 ]
@@ -123,8 +125,8 @@ class TimeManagementService
             [
                 'attendance_log_id' => $log->id,
                 'status' => 'Absent',
-                'minutes_late' => null,
-                'minutes_early' => null,
+                'minutes_late' => 0,
+                'minutes_early' => 0,
                 'flagged' => true,
             ]
         );
@@ -136,8 +138,8 @@ class TimeManagementService
             ],
             [
                 'type' => 'Absent',
-                'minutes_late' => null,
-                'minutes_early' => null,
+                'minutes_late' => 0,
+                'minutes_early' => 0,
                 'details' => 'Employee was absent on this date.',
                 'resolved' => false,
             ]
@@ -159,7 +161,7 @@ class TimeManagementService
     }
 
     public function processBatch(string $batch): int{
-        $logs = AttendanceLogs::where('batch', $batch)
+        $logs = AttendanceLogs::where('import_batch', $batch)
         ->with('employee')
         ->get();
 

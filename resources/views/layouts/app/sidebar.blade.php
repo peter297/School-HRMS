@@ -51,7 +51,7 @@
                 </flux:navlist.item>
                 <flux:navlist.item icon="exclamation-triangle" href="{{ route('time.incidents') }}"
                     :current="request()->routeIs('time.incidents')">
-                    Incidents
+                    Lateness Incidents
                 </flux:navlist.item>
                 <flux:navlist.item icon="arrow-left-end-on-rectangle" href="{{ route('time.movements') }}"
                     :current="request()->routeIs('time.movements')">
