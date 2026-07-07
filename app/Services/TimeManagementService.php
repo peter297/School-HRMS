@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AttendanceLogs;
 use App\Models\AttendanceRecords;
 use App\Models\Employees;
+use App\Models\Incident;
 use App\Models\Incidents;
 use App\Models\PermittedExits;
 use App\Models\Schedules;
@@ -96,7 +97,7 @@ class TimeManagementService
         if($flagged) {
             $details = $this->buildIncidentDetails($isLate, $isEarly, $minutesLate, $minutesEarly, $checkIn, $checkOut, $expectedIn, $expectedOut);
 
-            Incidents::updateOrCreate(
+            Incident::updateOrCreate(
                 [
                     'employee_id' => $employee->id,
                     'date' => $date,

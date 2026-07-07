@@ -107,32 +107,31 @@ class Index extends Component
         return Excel::download(new EmployeesImportTemplate(), 'employee_import_template.xlsx');
     }
 
-    public function importEmployees(): void{
-        $this->validate([
-            'importFile' => 'required|file|mimes:xlsx,xls|max:5120',
-        ]);
+    public function importEmployees(): void
+{
+    $this->validate([
+        'importFile' => 'required|file|mimes:xlsx,xls|max:5120',
+    ]);
 
-        $this->importErrors = [];
+    $this->importErrors = [];
 
-        try {
-            $import = new EmployeesImport();
-            Excel::import($import, $this->importFile->getRealPath());
+    try {
+        $import = new EmployeesImport();
+        Excel::import($import, $this->importFile->getRealPath());
 
-            $errors = $import->errors();
+        $this->importErrors = $import->getErrors();
+        $imported           = $import->getImportedCount();
 
-            if ($errors->count() > 0) {
-                foreach ($errors as $error) {
-                    $this->importErrors[] = $error->getMessage();
-                }
-            }
+        session()->flash('success', "Import complete. {$imported} employee(s) added." .
+            (count($this->importErrors) > 0 ? ' ' . count($this->importErrors) . ' row(s) skipped.' : '')
+        );
 
-            session()->flash('success', 'Import completed. ' . ($errors->count() > 0 ? count($this->importErrors) . ' row(s) skipped.' : 'All rows imported.'));
-            $this->showImportModal = false;
+        $this->showImportModal = false;
 
-        } catch (\Exception $e) {
-            $this->importErrors[] = 'Import failed: ' . $e->getMessage();
-        }
+    } catch (\Exception $e) {
+        $this->importErrors[] = 'Import failed: ' . $e->getMessage();
     }
+}
 
     public function exportSelected(): BinaryFileResponse{
         $ids = !empty($this->selectedIds)
@@ -164,7 +163,7 @@ class Index extends Component
             )
             ->when($this->filterType,     fn($q) => $q->where('staff_type', $this->filterType))
             ->when($this->filterDivision, fn($q) => $q->where('division',   $this->filterDivision))
-            ->when($this->filterStatus,   fn($q) => $q->where('status',     $this->filterStatus))
+            ->when($this->filterStatus,   fn($q) => $q->where('employment_status',     $this->filterStatus))
             ->when($this->filterBranch,   fn($q) => $q->where('branch',     $this->filterBranch));
     }
 

@@ -39,6 +39,7 @@ class Index extends Component
     public function render()
     {
         $query = Contract::with('employee', 'createdBy')
+            ->whereHas('employee')
             ->when($this->search, fn($q) =>
                 $q->whereHas('employee', fn($q) =>
                     $q->where('first_name', 'like', "%{$this->search}%")
@@ -53,7 +54,7 @@ class Index extends Component
 
         $contracts     = $query->paginate(15);
         $expiringCount = Contract::expiringSoon()->count();
-          
+
         return view('livewire.contracts.index', compact('contracts', 'expiringCount'));
     }
 }

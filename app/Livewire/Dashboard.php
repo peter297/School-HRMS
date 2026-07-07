@@ -55,7 +55,7 @@ class Dashboard extends Component
         $leaveThisMonth = Leaves::where('status', 'approved')
             ->whereMonth('start_date', $month)
             ->whereYear('start_date',  $year)
-            ->with('employee')
+            ->whereHas('employee')
             ->latest()
             ->take(5)
             ->get();
@@ -79,6 +79,7 @@ class Dashboard extends Component
 
         $recentIncidents = Incident::with('employee')
             ->where('resolved', false)
+            ->whereHas('employee')
             ->latest()
             ->take(5)
             ->get();
@@ -94,7 +95,7 @@ class Dashboard extends Component
             ->groupBy('employee_id')
             ->orderByDesc('total')
             ->take(3)
-            ->with('employee')
+            ->whereHas('employee')
             ->get();
 
         return view('livewire.dashboard', compact(

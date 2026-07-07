@@ -2,88 +2,82 @@
 
 namespace App\Imports;
 
+
 use App\Models\Employees;
-use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithSkipDuplicates;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Override;
 
-class EmployeesImport implements
-    ToModel,
-    WithHeadingRow,
-    WithValidation,
-    SkipsOnError
+class EmployeesImport implements ToCollection, WithHeadingRow
 {
+    private array $errors   = [];
+    private int   $imported = 0;
 
-    use SkipsErrors;
-
-
-private array $imported = [];
-    /**
-     * Create a new class instance.
-     */
-  
-
-    public function model(array $row): ?Employees
+    public function collection(Collection $rows): void
     {
-        // Skip if staff_number already exists
-        if (Employees::where('staff_number', $row['staff_number'])->exists()) {
+        foreach ($rows as $index => $row) {
+            try {
+                $arr = $row->toArray();
+
+                // Debug — remove after confirming
+                // throw new \Exception('RAW ROW ' . $index . ': ' . json_encode($arr));
+
+                $staffNumber = trim((string) ($arr['staff_number'] ?? ''));
+
+                if (!$staffNumber) continue;
+
+                // Skip existing staff numbers
+                if (Employees::where('staff_number', $staffNumber)->exists()) {
+                    continue;
+                }
+
+                $dateOfJoining = $this->parseDate($arr['date_of_joining'] ?? null);
+
+                if (!$dateOfJoining) {
+                    $this->errors[] = "Row {$index}: Invalid date for '{$staffNumber}'.";
+                    continue;
+                }
+
+                Employees::create([
+                    'staff_number'    => $staffNumber,
+                    'first_name'      => trim($arr['first_name']   ?? ''),
+                    'last_name'       => trim($arr['last_name']    ?? ''),
+                    'email'           => trim($arr['email']        ?? '') ?: null,
+                    'phone'           => trim($arr['phone']        ?? '') ?: null,
+                    'staff_type'      => trim($arr['staff_type']   ?? ''),
+                    'division'        => trim($arr['division']     ?? ''),
+                    'branch'          => trim($arr['branch']       ?? ''),
+                    'job_title'       => trim($arr['job_title']    ?? '') ?: null,
+                    'date_of_joining' => $dateOfJoining,
+                    'gender'          => trim($arr['gender']       ?? '') ?: null,
+                    'national_id'     => trim($arr['national_id']  ?? '') ?: null,
+                    'status'          => trim($arr['status']       ?? 'active'),
+                ]);
+
+                $this->imported++;
+
+            } catch (\Exception $e) {
+                $this->errors[] = "Row {$index}: " . $e->getMessage();
+            }
+        }
+    }
+
+    public function getErrors(): array   { return $this->errors; }
+    public function getImportedCount(): int { return $this->imported; }
+
+    private function parseDate(mixed $value): ?string
+    {
+        if ($value === null || $value === '') return null;
+
+        try {
+            if (is_numeric($value)) {
+                return \PhpOffice\PhpSpreadsheet\Shared\Date
+                    ::excelToDateTimeObject((float) $value)
+                    ->format('Y-m-d');
+            }
+            return \Carbon\Carbon::parse(trim((string) $value))->format('Y-m-d');
+        } catch (\Exception) {
             return null;
         }
-
-        return new Employees([
-            'staff_number' => $row['staff_number'],
-            'first_name' => $row['first_name'],
-            'last_name' => $row['last_name'],
-            'email' => $row['email'] ?? null,
-            'phone' => $row['phone']?? null,
-            'staff_type' => $row['staff_type'],
-            'division' => $row['division'],
-            'branch' => $row['branch'],
-            'job_title' => $row['job-title']??null,
-           'date_of_joining' => $this->parseDate($row['date_of_joining']),
-            'gender' => $row['gender']?? null,
-            'national_id' => $row['national_id']?? null,
-            'status' => $row['status'] ?? 'active',
-
-        ]);
-}
-
-
-	public function rules(): array
-    {
-        return[
-            'staff_number' => 'required|string',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'staff_type' => 'required|in:teacher,admin,spport_staff,',
-            'division' => 'required|in:eye,upper_primary,junior_school',
-            'branch' => 'required|in:juja_road,kitisuru,south_c',
-            'date_of_joining' => 'required',
-
-        ];
     }
-
-    public function customValidationMessages(): array{
-        return [
-               'staff_type.in' => 'staff_type must be one of: teacher, admin, support_staff',
-               'division.in' => 'division must be one of: eye, upper_primary, junior_school',
-               'branch.in' => 'branch must be one of: juja_road, kitisuru, south_c',
-        ];
-    }
-
-    public function parseDate(mixed $value): string{
-        if(is_numeric($value)){
-            return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value)
-            ->format('d-m-Y');
-        }
-
-        return \Carbon\Carbon::parse($value)->format('d-m-Y');
-    }
-
-
-
 }

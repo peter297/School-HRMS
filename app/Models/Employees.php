@@ -63,7 +63,7 @@ class Employees extends Model
 
     public function incidents()
     {
-        return $this->hasMany(Incidents::class);
+        return $this->hasMany(Incident::class);
     }
 
     public function getFullNameAttribute()

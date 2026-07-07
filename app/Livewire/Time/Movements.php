@@ -74,6 +74,7 @@ class Movements extends Component
             : [now()->year, now()->month];
 
         $exits = PermittedExits::with(['employee', 'recordedBy'])
+            ->whereHas('employee')
             ->whereMonth('date', $month)
             ->whereYear('date',  $year)
             ->whereHas('employee', fn($q) =>

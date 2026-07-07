@@ -1,7 +1,5 @@
 
 
-{{-- resources/views/livewire/dashboard.blade.php --}}
-
 <div>
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
@@ -129,9 +127,9 @@
             <div class="space-y-2">
                 @php
                     $typeLabels = [
-                        'teacher_eye'           => 'Teacher — EYE',
-                        'teacher_upper_primary' => 'Teacher — Upper Primary',
-                        'teacher_junior'        => 'Teacher — Junior School',
+                        'teacher'           => 'Teachers',
+                        // 'teacher_upper_primary' => 'Teacher — Upper Primary',
+                        // 'teacher_junior'        => 'Teacher — Junior School',
                         'admin'                 => 'Admin Staff',
                         'support_staff'         => 'Support Staff',
                     ];
