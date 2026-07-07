@@ -132,7 +132,7 @@ class TimeManagementService
             ]
         );
 
-        Incidents::updateOrCreate(
+        Incident::updateOrCreate(
             [
                 'employee_id' => $employee->id,
                 'date' => $log->date,
@@ -146,7 +146,7 @@ class TimeManagementService
             ]
         );
 
-        Incidents::updateOrCreate(
+        Incident::updateOrCreate(
             [
                 'employee_id' => $employee->id,
                 'date' => $log->date,
@@ -180,7 +180,7 @@ class TimeManagementService
 
     $count = 0;
 
-    Employees::where('status', 'active')->each(function (Employees $employee) use ($date, &$count){
+    Employees::where('employment_status', 'active')->each(function (Employees $employee) use ($date, &$count){
         $hasLog = AttendanceLogs::where('employee_id', $employee->id)
             ->whereDate('date', $date)
             ->exists();
