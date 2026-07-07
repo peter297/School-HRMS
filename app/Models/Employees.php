@@ -25,6 +25,11 @@ class Employees extends Model
         'date_of_joining',
         'gender',
         'national_id',
+        'kra_pin',
+        'nssf_number',
+        'sha_number',
+        'bank_name',
+        'bank_account_number',
         'employment_status',
     ];
 

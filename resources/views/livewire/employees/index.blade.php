@@ -122,7 +122,7 @@
                     Name
                 </th>
                 <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Branch</th>
-                <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Division</th>
+                <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Gender</th>
                 <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Staff Type</th>
                 <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Job Title</th>
                 <th class="px-4 py-3 font-medium text-zinc-500 dark:text-zinc-400">Status</th>
@@ -151,7 +151,7 @@
                     <div class="text-xs text-zinc-400">{{ $employee->email }}</div>
                 </td>
                 <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->branch_label }}</td>
-                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->division }}</td>
+                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->gender }}</td>
                 <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->staff_type }}</td>
                 <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->job_title ?? '—' }}</td>
                 <td class="px-4 py-3">
