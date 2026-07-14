@@ -67,9 +67,14 @@ class User extends Authenticatable
         return $this->role === 'hr_admin';
     }
 
-    public function isStaff(): bool
+    public function isStaffAdmin(): bool
     {
-        return $this->role === 'staff';
+        return $this->role === 'staff_admin';
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->role === 'teacher';
     }
 
     public function canManageHr(){

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,6 +23,10 @@ class Employees extends Model
         'division',
         'branch',
         'job_title',
+        'qualification',
+        'tsc_number',
+        'bank_code',
+        'branch_code',
         'date_of_joining',
         'gender',
         'national_id',
@@ -31,6 +36,9 @@ class Employees extends Model
         'bank_name',
         'bank_account_number',
         'employment_status',
+        'date_of_birth',
+        'age',
+        'years_of_employment',
     ];
 
     #[Override]
@@ -38,6 +46,7 @@ class Employees extends Model
     {
         return[
             'date_of_joining' => 'date',
+            'date_of_birth' => 'date',
         ];
     }
 
@@ -85,8 +94,16 @@ class Employees extends Model
         default => ucfirst($this->branch),
 
     };
+
     }
 
+    public function getAgeAttribute(): int{
+        return Carbon::parse($this->date_of_birth)->diffInYears(Carbon::now());
+    }
+
+    public function getYearsOfEmploymentAttribute(): int{
+        return Carbon::parse($this->date_of_joining)->diffInYears(Carbon::now());
+    }
 
 
 

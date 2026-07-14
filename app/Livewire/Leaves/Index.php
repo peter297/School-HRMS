@@ -86,6 +86,7 @@ class Index extends Component
     public function render()
     {
         $leaves = Leaves::with(['employee', 'leaveType', 'approvedBy'])
+            ->whereHas('employee')
             ->when($this->search, fn($q) =>
                 $q->whereHas('employee', fn($q) =>
                     $q->where('first_name', 'like', "%{$this->search}%")

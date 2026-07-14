@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['super_admin', 'hr_admin', 'staff_admin', 'teacher'])
-            ->default('teacher')
-            ->after('email');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->string('qualification')->nullable()->after('job_title');
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropColumn('qualification');
         });
     }
 };

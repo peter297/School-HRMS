@@ -64,12 +64,19 @@ class EmployeesExport implements FromQuery, WithHeadings, WithMapping, WithStyle
             // 'Division',
             'Branch',
             'Job Title',
+            'Qualification',
+            'TSC Number',
             'Date of Joining',
+            'Date of Birth',
+            'Years of Employment',
+            'Age',
             'KRA PIN',
             'NSSF Number',
             'SHA Number',
             'Bank Name',
             'Bank Account Number',
+            'Bank Code',
+            'Branch Code',
             'Status',
         ];
     }
@@ -88,12 +95,19 @@ class EmployeesExport implements FromQuery, WithHeadings, WithMapping, WithStyle
         // $employee->division_label,
         $employee->branch_label,
         $employee->job_title ?? '',
+        $employee->qualification ?? '',
+        $employee->tsc_number ?? '',
         $employee->date_of_joining->format('d/m/Y'),
+        $employee->years_of_employment ?? '',
+        $employee->date_of_birth ? $employee->date_of_birth->format('d/m/Y') : '',
+        $employee->age ?? '',
         $employee->kra_pin ?? '',
         $employee->nssf_number ?? '',
         $employee->sha_number ?? '',
         $employee->bank_name ?? '',
         $employee->bank_account_number ?? '',
+        $employee->bank_code ?? '',
+        $employee->branch_code ?? '',
         ucfirst(str_replace('-', ' ', $employee->status)),
 
     ];
@@ -130,6 +144,10 @@ class EmployeesExport implements FromQuery, WithHeadings, WithMapping, WithStyle
             'Q' => 18,
             'R' => 28,
             'S' => 14,
+            'T' => 18,
+            'U' => 18,
+            'V' => 18,
+            'W' => 18,
 
         ];
     }

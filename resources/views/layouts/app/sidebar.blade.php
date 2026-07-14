@@ -18,6 +18,8 @@
              <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
         </div>
+    @if(auth()->check())
+    @if(auth()->user()->isSuperAdmin())
 
         <flux:navlist class="px-2">
 
@@ -59,6 +61,8 @@
                 </flux:navlist.item>
             </flux:navlist.group>
 
+        
+
             {{-- @if(auth()->user()->isSuperAdmin())
             <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
                 :current="request()->routeIs('users.*')">
@@ -68,6 +72,19 @@
 
 
         </flux:navlist>
+
+        @elseif(auth()->user()->isTeacher())
+        <flux:navlist class="px-2">
+
+            <flux:navlist.item icon="home" href="{{ route('teacher.dashboard') }}" :current="request()->routeIs('teacher.dashboard')">
+                Dashboard
+            </flux:navlist.item>
+
+        </flux:navlist>
+
+
+        @endif  
+        @endif
 
         {{-- <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode"  /> --}}
 

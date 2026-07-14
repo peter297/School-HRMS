@@ -68,7 +68,7 @@
                                 </flux:badge>
                             </td>
                             <td class="py-3 px-3 text-center">
-                                {{ $record->minutes_late > 0 ? $record->minutes_late : '—' }}
+                                {{ $record->minutes_late}}
                             </td>
                             <td class="py-3 px-3 text-center">
                                 {{ $record->minutes_early > 0 ? $record->minutes_early : '—' }}

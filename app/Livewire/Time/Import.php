@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 
 class Import extends Component
+
 {
 
     use WithFileUploads;

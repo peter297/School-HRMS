@@ -36,7 +36,12 @@ class EmployeesImportTemplate implements FromArray, WithHeadings, WithStyles, Wi
                 'junior_school',
                 'juja_road',
                 'Class Teacher',
+                'Bachelor of Education',
+                '1234567890',
                 '01/09/2026',
+                '5',
+                '01/09/1990',
+                '25',
                 'female',
                 '12345678',
                 'A12345678Z',
@@ -44,6 +49,8 @@ class EmployeesImportTemplate implements FromArray, WithHeadings, WithStyles, Wi
                 'ABC123456789',
                 'Gulf',
                 '1122334455',
+                'ABC123',
+                '123456',
                 'active',
 
             ],
@@ -63,7 +70,12 @@ class EmployeesImportTemplate implements FromArray, WithHeadings, WithStyles, Wi
             'division',
             'branch',
             'job_title',
+            'qualification',
+            'tsc_number',
             'date_of_joining',
+            'years_of_employment',
+            'date_of_birth',
+            'age',
             'gender',
             'national_id',
             'kra_pin',
@@ -71,6 +83,8 @@ class EmployeesImportTemplate implements FromArray, WithHeadings, WithStyles, Wi
             'sha_number',
             'bank_name',
             'bank_account_number',
+            'bank_code',
+            'branch_code',
             'status',
         ];
     }
@@ -99,7 +113,8 @@ class EmployeesImportTemplate implements FromArray, WithHeadings, WithStyles, Wi
             'E' => 18, 'F' => 24, 'G' => 20, 'H' => 14,
             'I' => 22, 'J' => 18, 'K' => 10, 'L' => 16,
             'M' => 10, 'N' => 18, 'O' => 20, 'P' => 22,
-            'Q' => 14, 'R' => 20, 'S' => 20
+            'Q' => 14, 'R' => 20, 'S' => 20, 'T' => 20, 
+            'U' => 20, 'V' => 20, 'W' => 20
         ];
     }
 
