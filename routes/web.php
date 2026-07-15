@@ -10,7 +10,7 @@ use App\Livewire\Time\Import;
 use App\Livewire\Time\Incidents;
 use App\Livewire\Time\Movements;
 // use App\Models\Schedules;
-use App\Livewire\Teacher\Dashboard as TeacherDashboard;
+use App\Livewire\Teachers\Dashboard as TeacherDashboard;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -20,10 +20,16 @@ Route::get('/welcome', function () {
 Route::get('/', fn() => redirect()->route('login'));
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/teacher/dashboard', TeacherDashboard::class)->name('teacher.dashboard');
+    
+    
+   
+    Route::middleware('role:teacher')->group(function(){
+        Route::get('/dashboard', Dashboard::class)->name('dashboard');
+        Route::get('/dashboard', TeacherDashboard::class)->name('teacher.dashboard');
+    });
     // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
+        
         Route::get('/employees', EmployeesIndex::class)->name('employees.index');
         Route::get('/employees/create', Create::class)->name('employees.create');
         Route::get('/employees/{employee}/edit', Edit::class)->name('employees.edit');

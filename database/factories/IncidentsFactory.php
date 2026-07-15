@@ -6,7 +6,7 @@ use App\Models\Incidents;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Incidents>
+ * @extends Factory<Incident>
  */
 class IncidentsFactory extends Factory
 {

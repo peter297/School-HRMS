@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\AttendanceRecord;
 use App\Models\AttendanceRecords;
 use App\Models\Contract;
-use App\Models\Employee;
 use App\Models\Employees;
 use App\Models\Incident;
 

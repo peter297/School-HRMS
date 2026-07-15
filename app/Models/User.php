@@ -85,4 +85,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Employees::class);
 
     }
+
+    public function getRedirectRouteName(): string{
+        return match($this->role){
+            'super_admin' => 'dashboard',
+            'teacher' => 'teacher.dashborad',
+        };
+    }
 }
