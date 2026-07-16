@@ -18,6 +18,7 @@ class Leaves extends Model
         'end_date',
         'days_requested',
         'status',
+        'approval_stage',
         'reason',
         'rejection_reason',
         'approved_by',
@@ -45,14 +46,41 @@ class Leaves extends Model
         return $this->belongsTo(User::class, 'approved_by');
     }
 
+    public function approvals(){
+        return $this->hasMany(LeaveApproval::class);
+    }
+
+    public function lineManagerApproval(){
+        return $this->hasOne(LeaveApproval::class)->with('stage', 'line_manager');
+    }
+
+    public function hrApproval(){
+        return $this->hasOne(LeaveApproval::class)->with('stage', 'hr');
+    }
+
     public function getStatusColorAttribute()
     {
         return match ($this->status) {
 
-            'approved' => 'text-green-500',
-            'rejected' => 'text-red-500',
-            'cancelled' => 'text-zinc-500',
-            default => 'text-yellow-500',
+            'approved' => 'green',
+            'rejected_line_manager',
+            'rejected_hr' => 'red',
+            'pending_line_manager' => 'yellow',
+            'pending_hr' => 'blue',
+            'cancelled' => 'zinc',
+            default => 'zinc',
+        };
+    }
+
+    public function getApprovalStageLabelAttribute():string{
+        return match($this->match){
+            'pending_line_manager' => 'Awaiting Line Manager',
+            'pending_hr' => 'Awaiting HR',
+            'approved' => 'Approved',
+            'rejected_line_manager' => 'Rejected by Line Manager',
+            'rejected_hr' => 'Rejected by HR',
+            'cancelled' => 'Cancelled', 
+
         };
     }
 

@@ -15,13 +15,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::updateOrCreate([
+        User::updateOrCreate(
+            [
             'email' => 'admin@school.ac.ke'],
             [
                 'name' => 'Super Admin',
                 'password' => bcrypt('password'),
                 'role' => 'super_admin',
-            ]
+            ],
+          
             );
 
         // User::factory()->create([

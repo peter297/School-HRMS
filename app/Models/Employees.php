@@ -105,6 +105,14 @@ class Employees extends Model
         return Carbon::parse($this->date_of_joining)->diffInYears(Carbon::now());
     }
 
+    public function lineManager(){
+        return $this->belongsTo(Employees::class, 'line_manager_id');
+    }
+
+    public function directReports(){
+        return $this->hasMany(Employees::class, 'line_manager_id');
+    }
+
 
 
 

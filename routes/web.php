@@ -21,12 +21,12 @@ Route::get('/', fn() => redirect()->route('login'));
 
 Route::middleware('auth')->group(function () {
     
-    
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
    
-    Route::middleware('role:teacher')->group(function(){
-        Route::get('/dashboard', Dashboard::class)->name('dashboard');
-        Route::get('/dashboard', TeacherDashboard::class)->name('teacher.dashboard');
-    });
+    // Route::middleware('role:teacher')->group(function(){
+        
+    //     Route::get('/dashboard', TeacherDashboard::class)->name('teacher.dashboard');
+    // });
     // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
         
