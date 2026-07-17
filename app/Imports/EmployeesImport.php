@@ -48,7 +48,7 @@ class EmployeesImport implements ToCollection, WithHeadingRow
                     'division'        => trim($arr['division']     ?? ''),
                     'branch'          => trim($arr['branch']       ?? ''),
                     'job_title'       => trim($arr['job_title']    ?? '') ?: null,
-                    'date_of_joining' => $dateOfJoining,
+                    'date_of_joining' => trim($arr['date_of_joining'] ?? '')?: null,
                     'gender'          => trim($arr['gender']       ?? '') ?: null,
                     'national_id'     => trim($arr['national_id']  ?? '') ?: null,
                     'kra_pin'  => trim($arr['kra_pin'] ?? '') ?: null,
