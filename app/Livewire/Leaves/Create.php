@@ -45,7 +45,7 @@ class Create extends Component
             $service = app(LeaveService::class);
             $this->days_requested = $service->countWorkingDays($this->start_date, $this->end_date);
         }
-        
+
     }
 
     public function save(){
@@ -75,6 +75,7 @@ class Create extends Component
             'reason' => $this->reason,
             'days_requested' => $days,
             'status' => $status,
+            
         ]);
 
         if($status === 'approved'){

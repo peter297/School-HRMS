@@ -79,7 +79,7 @@ public function approve(Leaves $leave, int $approvedBy){
         'approved_at' => now(),
     ]);
 
-    
+
 }
 
 // The Line Manager Approves the Leave that is applied by the employee
@@ -97,7 +97,7 @@ public function lineManagerApprove(Leaves $leave, int $actedBy, string $notes = 
                         'acted_at' => now(),
                     ]
 
-                   
+
             );
 
              $leave->update([
@@ -166,7 +166,7 @@ public function hrApprove(Leaves $leave, int $actedBy, string $notes = ''): void
 
         ]
 
-        
+
     );
     $year = $leave->start_date->year;
     $balance = $this->getOrCreateBalance($leave->employee_id, $leave->leave_type_id, $year);
@@ -176,7 +176,7 @@ public function hrApprove(Leaves $leave, int $actedBy, string $notes = ''): void
         'approval_stage' => 'approved',
         'status' => 'approved',
         'approved_by' => $actedBy,
-        'approved_at' => now();
+        'approved_at' => now(),
     ]);
 }
 
@@ -184,7 +184,7 @@ public function hrApprove(Leaves $leave, int $actedBy, string $notes = ''): void
 
 public function hrReject(Leaves $leave, int $actedBy, string $notes): void{
     LeaveApproval::updateOrCreate(
-        [$leave->leave_id, 'stage' => 'hr'],
+        ['leave_id' => $leave->id, 'stage' => 'hr'],
         [
             'action' => 'rejected',
             'acted_by' => $actedBy,
@@ -210,11 +210,11 @@ public function reject(Leaves $leave, string $reason, int $rejectedBy){
         'rejected_reason' => $reason,
         'rejected_by' => $rejectedBy,
         'rejected_at' => now(),
-        
+
     ]);
 
-    
-   
+
+
 
 
 }

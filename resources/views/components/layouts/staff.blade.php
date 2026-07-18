@@ -12,7 +12,7 @@
 
 <flux:sidebar sticky stashable class="bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700">
 
-    <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
+    <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
     <div class="px-4 py-5 border-b border-zinc-200 dark:border-zinc-700">
         <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Staff Portal</p>
@@ -52,6 +52,26 @@
             <button class="text-xs text-zinc-400 hover:text-red-500">Sign out</button>
         </form>
     </div>
+
+     {{-- <div class="mt-auto px-4 py-4 border-t border-zinc-200 dark:border-zinc-700">
+
+                <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+                <flux:text class="truncate">{{ auth()->user()->employee?->staff_number }}</flux:text>
+                <flux:separator />
+
+                <div>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                            class="w-full cursor-pointer" data-test="logout-button">
+                            {{ __('Log out') }}
+                        </flux:menu.item>
+                    </form>
+
+                </div>
+
+    </div> --}}
 
 </flux:sidebar>
 

@@ -60,7 +60,7 @@ class Create extends Component
         }
 
         Leaves::create([
-            'empoyee_id' => $employee->id,
+            'employee_id' => $employee->id,
             'leave_type_id' => $this->leave_type_id,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,

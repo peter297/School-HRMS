@@ -15,7 +15,6 @@ class Dashboard extends Component
         $user     = auth()->user();
         $employee = $user->employee;
 
-        // Guard — user has no linked employee record
         if (!$employee) {
             return view('livewire.staff.dashboard', [
                 'employee'         => null,
@@ -31,15 +30,9 @@ class Dashboard extends Component
             ->take(5)
             ->get();
 
-        // ← Fix: use whereYear() not where('year')
+        // ← Single clean query — year column exists on leave_balances table
         $balances = LeaveBalances::where('employee_id', $employee->id)
-            ->whereYear('created_at', now()->year)  // ← only if you filter by year
-            ->with('leaveType')
-            ->get();
-
-        // Better — the year column IS on leave_balances, so this is correct:
-        $balances = LeaveBalances::where('employee_id', $employee->id)
-            ->where('year', now()->year)  // ← this is fine on leave_balances
+            ->where('year', now()->year)
             ->with('leaveType')
             ->get();
 
@@ -48,5 +41,9 @@ class Dashboard extends Component
             )
             ->where('approval_stage', 'pending_line_manager')
             ->count();
+
+        return view('livewire.staff.dashboard',
+            compact('employee', 'myLeaves', 'balances', 'pendingApprovals')
+        );
     }
 }

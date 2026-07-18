@@ -131,6 +131,14 @@
                                         <flux:button wire:click="openHrRejectModal({{ $leave->id }})" size="sm"
                                             icon="x-mark" variant="ghost" class="text-red-500" />
                                     @endif
+
+                                    @if ($leave->approval_stage === 'pending_line_manager')
+                                        <flux:button wire:click="openHrApproveModal({{ $leave->id }})"
+                                            size="sm" icon="check" variant="ghost" class="text-green-600" />
+                                        <flux:button wire:click="openHrRejectModal({{ $leave->id }})" size="sm"
+                                            icon="x-mark" variant="ghost" class="text-red-500" />
+                                    @endif
+                                    
                                     @if ($leave->approval_stage === 'rejected_line_manager')
                                         <flux:button wire:click="openOverrideModal({{ $leave->id }})" size="sm"
                                             variant="ghost" icon="shield-check" class="text-yellow-600">
@@ -153,8 +161,8 @@
                                             size="sm" icon="x-mark" variant="ghost"
                                             class="text-red-500"
                                         />
-                                    @endif
-                                    @if (in_array($leave->status, ['pending', 'approved']))
+                                    @endif --}}
+                                    {{-- @if (in_array($leave->status, ['pending', 'approved']))
                                         <flux:button
                                             wire:click="cancelLeave({{ $leave->id }})"
                                             wire:confirm="Cancel this leave? Approved balance will be restored."

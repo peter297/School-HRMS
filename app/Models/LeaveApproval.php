@@ -28,7 +28,7 @@ class LeaveApproval extends Model
 
     public function leave()
     {
-        return $this->belongsTo(Leaves::class);
+        return $this->belongsTo(Leaves::class, 'leave_id');
     }
 
     public function actedBy()

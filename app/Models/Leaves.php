@@ -47,15 +47,15 @@ class Leaves extends Model
     }
 
     public function approvals(){
-        return $this->hasMany(LeaveApproval::class);
+        return $this->hasMany(LeaveApproval::class, 'leave_id');
     }
 
     public function lineManagerApproval(){
-        return $this->hasOne(LeaveApproval::class)->with('stage', 'line_manager');
+        return $this->hasOne(LeaveApproval::class, 'leave_id')->with('stage', 'line_manager');
     }
 
     public function hrApproval(){
-        return $this->hasOne(LeaveApproval::class)->with('stage', 'hr');
+        return $this->hasOne(LeaveApproval::class, 'leave_id')->with('stage', 'hr');
     }
 
     public function getStatusColorAttribute()
@@ -72,14 +72,15 @@ class Leaves extends Model
         };
     }
 
-    public function getApprovalStageLabelAttribute():string{
-        return match($this->match){
+    public function getApprovalStageLabelAttribute(): string{
+        return match($this->approval_stage){
             'pending_line_manager' => 'Awaiting Line Manager',
             'pending_hr' => 'Awaiting HR',
             'approved' => 'Approved',
             'rejected_line_manager' => 'Rejected by Line Manager',
             'rejected_hr' => 'Rejected by HR',
-            'cancelled' => 'Cancelled', 
+            'cancelled' => 'Cancelled',
+             default                 => ucfirst($this->approval_stage),
 
         };
     }

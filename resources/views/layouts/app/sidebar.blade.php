@@ -12,14 +12,15 @@
 
         <div class="px-4 py-5 border-b border-zinc-200 dark:border-zinc-700">
             <div class="flex flex-row justify-between h-10 w-10  rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2 mb-2">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Alameen Academy HRMS') }} Logo" class="h-10 w-auto" />
+                <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Alameen Academy HRMS') }} Logo"
+                    class="h-10 w-auto" />
 
             </div>
-             <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
+            <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
         </div>
-    {{-- @if(auth()->check())
-    @if(auth()->user()->isSuperAdmin()) --}}
+        {{-- @if(auth()->check())
+        @if(auth()->user()->isSuperAdmin()) --}}
 
         <flux:navlist class="px-2">
 
@@ -61,7 +62,7 @@
                 </flux:navlist.item>
             </flux:navlist.group>
 
-        
+
 
             {{-- @if(auth()->user()->isSuperAdmin())
             <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
@@ -76,35 +77,63 @@
         {{-- @elseif(auth()->user()->isTeacher())
         <flux:navlist class="px-2">
 
-            <flux:navlist.item icon="home" href="{{ route('teacher.dashboard') }}" :current="request()->routeIs('teacher.dashboard')">
+            <flux:navlist.item icon="home" href="{{ route('teacher.dashboard') }}"
+                :current="request()->routeIs('teacher.dashboard')">
                 Dashboard
             </flux:navlist.item>
 
         </flux:navlist> --}}
 
 
-        {{-- @endif  
+        {{-- @endif
         @endif --}}
 
-        {{-- <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode"  /> --}}
+        {{--
+        <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
+            aria-label="Toggle dark mode" /> --}}
 
 
         <div class="mt-auto px-4 py-4 border-t border-zinc-200 dark:border-zinc-700">
 
-            <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ auth()->user()->name }}</p>
-            <form method="POST" action="{{ route('logout') }}">
+            {{-- <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ auth()->user()->name }}</p> --}}
+
+            <div class="grid flex-1 text-start text-sm leading-tight">
+                <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+
+                <flux:separator />
+
+                <div>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                            class="w-full cursor-pointer" data-test="logout-button">
+                            {{ __('Log out') }}
+                        </flux:menu.item>
+                    </form>
+
+                </div>
+
+            </div>
+            {{-- <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="text-xs text-zinc-400 hover:text-red-500 mt-1">Sign out</button>
-            </form>
+            </form> --}}
+            {{--
+            <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
+                aria-label="Toggle dark mode" /> --}}
+
+
         </div>
-{{--
-         <div>
-                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate class="mx-auto">
-                        {{ __('Settings') }}
-                    </flux:menu.item>
-                </flux:menu.radio.group>
-            </div> --}}
+        {{--
+        <div>
+            <flux:menu.radio.group>
+                <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate class="mx-auto">
+                    {{ __('Settings') }}
+                </flux:menu.item>
+            </flux:menu.radio.group>
+        </div> --}}
+
 
     </flux:sidebar>
 
@@ -184,9 +213,11 @@
                     <flux:radio value="dark">Dark</flux:radio>
                     <flux:radio value="system">System</flux:radio>
                 </flux:radio.group> --}}
-                {{-- <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
+                {{--
+                <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
                     aria-label="Toggle dark mode" /> --}}
-                    <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" />
+                <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
+                    aria-label="Toggle dark mode" />
 
                 <flux:menu.separator />
 
