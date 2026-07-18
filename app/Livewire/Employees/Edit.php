@@ -91,7 +91,8 @@ class Edit extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-
-        return view('livewire.employees.edit');
+        $employees = Employees::orderBy('first_name')->get();
+        // dd($employees);
+        return view('livewire.employees.edit', compact('employees'));
     }
 }

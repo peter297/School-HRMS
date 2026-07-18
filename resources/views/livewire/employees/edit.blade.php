@@ -38,7 +38,7 @@
                     <flux:select wire:model="line_manager_id" label="Line manager">
                         <flux:select.option value="">None</flux:select.option>
                         @foreach ($employees as $emp)
-                            @if ($emp->id !== ($employees->id ?? null))
+                            @if ($emp->id !== ($employee->id ?? null))
                                 <flux:select.option value="{{ $emp->id }}">
                                     {{ $emp->full_name }} ({{ $emp->staff_number }})
                                 </flux:select.option>
