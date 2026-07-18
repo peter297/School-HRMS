@@ -23,9 +23,31 @@ class Index extends Component
 
     public bool $showRejectModal = false;
     public int $rejectingId = 0;
-    public string $rejectsNotes = '';
+    public string $rejectNotes = '';
 
-    
+    public function openApproveModal(int $id): void{
+        $this->approvingId = $id;
+        $this->approveNotes = '';
+        $this->taskAssignedTo = '';
+        $this->taskDescription = '';
+        $this->showApproveModal = true;
+    }
+
+    public function openRejectModal(int $id): void{
+        $this->rejectingId = $id;
+        $this->rejectNotes = '';
+        $this->showRejectModal = true;
+    }
+
+    public function confirmApprove(): void{
+        $this->validate([
+            
+        ]);
+    }
+
+
+
+
     public function render()
     {
         return view('livewire.staff.approvals.index');
