@@ -28,7 +28,7 @@ class Index extends Component
             session()->flash('success', 'Leave cancelled successfully');
     }
 
-    #[Layout('componets.layouts.staff')]
+    #[Layout('components.layouts.staff')]
     public function render()
     {
         $employee = auth()->user()->employee;

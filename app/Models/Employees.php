@@ -37,6 +37,7 @@ class Employees extends Model
         'bank_account_number',
         'employment_status',
         'date_of_birth',
+        'user_id',
         'age',
         'years_of_employment',
     ];
@@ -52,7 +53,7 @@ class Employees extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class. 'user_id', 'id');
     }
 
     public function contracts()

@@ -96,4 +96,6 @@
             </flux:card>
         @endif
     </div>
+
+    
 </div>

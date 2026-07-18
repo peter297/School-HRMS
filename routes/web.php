@@ -5,6 +5,10 @@ use App\Livewire\Employees\Create;
 use App\Livewire\Employees\Edit;
 use App\Livewire\Employees\Index as EmployeesIndex;
 use App\Livewire\Leaves\Index;
+use App\Livewire\Staff\Approvals\Index as ApprovalsIndex;
+use App\Livewire\Staff\Dashboard as StaffDashboard;
+use App\Livewire\Staff\Leaves\Create as LeavesCreate;
+use App\Livewire\Staff\Leaves\Index as LeavesIndex;
 use App\Livewire\Time\Attendance;
 use App\Livewire\Time\Import;
 use App\Livewire\Time\Incidents;
@@ -19,17 +23,38 @@ Route::get('/welcome', function () {
 
 Route::get('/', fn() => redirect()->route('login'));
 
+
+
 Route::middleware('auth')->group(function () {
-    
+
+    // Route::get('/dashboard', function () {
+    //     return match (auth()->user()->role) {
+    //         'super_admin', 'hr_admin' => redirect()->route('dashboard'),
+    //         default  => redirect()->route('staff.dashboard'),
+    //     };
+    // })->middleware('auth')->name('login.redirect');
+
+     Route::get('/login-redirect', function () {
+        return match(auth()->user()->role) {
+            'super_admin', 'hr_admin' => redirect()->route('dashboard'),
+            default                   => redirect()->route('staff.dashboard'),
+        };
+    })->name('login.redirect');
+
+    Route::prefix('staff')->name('staff.')->group(function () {
+        Route::get('/dashboard', StaffDashboard::class)->name('dashboard');
+        Route::get('/leaves', LeavesIndex::class)->name('leaves.index');
+        Route::get('/leaves/apply', LeavesCreate::class)->name('leaves.create');
+
+        Route::get('/approvals', ApprovalsIndex::class)->name('approvals.index');
+    });
+
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-   
-    // Route::middleware('role:teacher')->group(function(){
-        
-    //     Route::get('/dashboard', TeacherDashboard::class)->name('teacher.dashboard');
-    // });
+
+  
     // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
-        
+
         Route::get('/employees', EmployeesIndex::class)->name('employees.index');
         Route::get('/employees/create', Create::class)->name('employees.create');
         Route::get('/employees/{employee}/edit', Edit::class)->name('employees.edit');
@@ -55,4 +80,4 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

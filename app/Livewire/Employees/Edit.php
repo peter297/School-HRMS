@@ -26,6 +26,8 @@ class Edit extends Component
     public string $national_id       = '';
     public string $employment_status = 'active';
 
+    public int $line_manager_id = 0;
+
     public function mount(Employees $employee): void
     {
         $this->employee          = $employee;
@@ -42,6 +44,7 @@ class Edit extends Component
         $this->gender            = $employee->gender ?? '';
         $this->national_id       = $employee->national_id ?? '';
         $this->employment_status = $employee->employment_status;
+        $this->line_manager_id = $employee->line_manager_id ?? 0;
     }
 
     protected function rules(): array
@@ -88,6 +91,7 @@ class Edit extends Component
     #[Layout('layouts.app')]
     public function render()
     {
+
         return view('livewire.employees.edit');
     }
 }

@@ -27,6 +27,58 @@ class Index extends Component
 
     public string $rejectReason = '';
 
+    public bool $showHrApproveModal = false;
+    public bool $showHrRejectModal = false;
+
+    public bool $showOverrideModal = false;
+
+    public int $hrActingId = 0;
+
+    public string $hrNotes = '';
+
+    public function openHrApproveModal(int $id): void{
+        $this->hrActingId = $id;
+        $this->hrNotes = '';
+        $this->showHrApproveModal = true;
+    }
+
+    public function openHrRejectModal(int $id): void{
+        $this->hrActingId = $id;
+        $this->hrNotes = '';
+        $this->showHrRejectModal = true;
+    }
+
+    public function openOverrideModal(int $id): void{
+        $this->hrActingId = $id;
+        $this->hrNotes = '';
+        $this->showOverrideModal = true;
+    }
+
+    public function confirmHrApprove(): void{
+        $leave = Leaves::findOrFail($this->hrActingId);
+        app(LeaveService::class)->hrApprove($leave, auth()->id(), $this->hrNotes);
+        $this->showHrApproveModal = false;
+        session()->flash('success', 'Leave approved by HR.');
+    }
+
+    public function confirmHrReject(): void{
+        $this->validate(['hrNotes' => 'required|string|min:5']);
+        $leave = Leaves::findOrFail($this->hrActingId);
+        app(LeaveService::class)->hrReject($leave, auth()->id(), $this->hrNotes);
+        $this->showHrRejectModal = false;
+        session()->flash('success', 'Leave rejected by HR.');
+    }
+
+    public function confirmOverride(): void{
+        $this->validate(['hrNotes' => 'required|string|min:5']);
+        $leave = Leaves::findOrFail($this->hrActingId);
+        app(LeaveService::class)->hrOverride($leave, auth()->id(), $this->hrNotes);
+        $this->showOverrideModal = false;
+        session()->flash('success', 'Line manager rejection overriden. Leave approved.');
+    }
+
+
+
     protected $queryString = [
         'search' => ['except' => ''],
         'filterType' => ['except' => ''],

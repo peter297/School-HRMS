@@ -35,6 +35,16 @@
             <div>
                 <flux:heading size="sm" class="mb-4">Employment details</flux:heading>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <flux:select wire:model="line_manager_id" label="Line manager">
+                        <flux:select.option value="">None</flux:select.option>
+                        @foreach ($employees as $emp)
+                            @if ($emp->id !== ($employees->id ?? null))
+                                <flux:select.option value="{{ $emp->id }}">
+                                    {{ $emp->full_name }} ({{ $emp->staff_number }})
+                                </flux:select.option>
+                            @endif
+                        @endforeach
+                    </flux:select>
                     <flux:select wire:model="staff_type" label="Staff type" required>
                         <flux:select.option value="teacher">Teacher </flux:select.option>
                         <flux:select.option value="admin">Admin</flux:select.option>

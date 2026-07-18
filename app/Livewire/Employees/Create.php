@@ -22,6 +22,8 @@ public string $gender            = '';
 public string $national_id       = '';
 public string $employment_status = 'active';
 
+public int $line_manager_id = 0;
+
 
     protected function rules(): array
     {
@@ -61,6 +63,7 @@ public string $employment_status = 'active';
             'gender'            => $this->gender ?: null,
             'national_id'       => $this->national_id ?: null,
             'employment_status' => $this->employment_status ?: null,
+            'line_manager_id' => $this->line_manager_id ?: null,
         ]);
 
         // session()->flash('success', 'Employee created successfully.');
@@ -76,6 +79,7 @@ public string $employment_status = 'active';
     #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.employees.create');
+        $employees = Employees::orderBy('first_name')->get();
+        return view('livewire.employees.create', compact('employees'));
     }
 }

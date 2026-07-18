@@ -25,12 +25,12 @@ class User extends Authenticatable
      * @return array<string, string>
      */
 
-     protected $fillable = [
+    protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-     ];
+    ];
 
     protected $hidden = [
         'password',
@@ -53,7 +53,7 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
@@ -77,17 +77,24 @@ class User extends Authenticatable
         return $this->role === 'teacher';
     }
 
-    public function canManageHr(){
+    public function canManageHr()
+    {
         return in_array($this->role, ['super_admin', 'hr_admin']);
     }
 
-    public function employees(){
-        return $this->belongsToMany(Employees::class);
+    // public function employees(){
+    //     return $this->belongsToMany(Employees::class);
 
+    // }
+
+    public function employee()
+    {
+        return $this->hasOne(Employees::class, 'user_id', 'id');
     }
 
-    public function getRedirectRouteName(): string{
-        return match($this->role){
+    public function getRedirectRouteName(): string
+    {
+        return match ($this->role) {
             'super_admin' => 'dashboard',
             'teacher' => 'teacher.dashborad',
         };

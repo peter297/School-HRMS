@@ -9,28 +9,44 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
-    #[Layout('componets.layouts.staff')]
+    #[Layout('components.layouts.staff')]
     public function render()
     {
-        $employee = auth()->user()->employee;
+        $user     = auth()->user();
+        $employee = $user->employee;
 
-        $myLeaves = Leaves::where('employee_id', $employee?->id)
-            ->where('year', now()->year)
+        // Guard — user has no linked employee record
+        if (!$employee) {
+            return view('livewire.staff.dashboard', [
+                'employee'         => null,
+                'myLeaves'         => collect(),
+                'balances'         => collect(),
+                'pendingApprovals' => 0,
+            ]);
+        }
+
+        $myLeaves = Leaves::where('employee_id', $employee->id)
+            ->with('leaveType')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // ← Fix: use whereYear() not where('year')
+        $balances = LeaveBalances::where('employee_id', $employee->id)
+            ->whereYear('created_at', now()->year)  // ← only if you filter by year
             ->with('leaveType')
             ->get();
 
-        $balances = LeaveBalances::where('employee_id', $employee?->id)
-            ->where('year', now()->year)
+        // Better — the year column IS on leave_balances, so this is correct:
+        $balances = LeaveBalances::where('employee_id', $employee->id)
+            ->where('year', now()->year)  // ← this is fine on leave_balances
             ->with('leaveType')
             ->get();
 
-        $pendingApprovals = $employee
-            ? Leaves::whereHas('employee', fn($q) => 
+        $pendingApprovals = Leaves::whereHas('employee', fn($q) =>
                 $q->where('line_manager_id', $employee->id)
-                )
-                ->where('approval_stage', 'pending_line_manager')
-                ->count()
-                : 0;
-        return view('livewire.staff.dashboard', compact('myLeaves', 'balances', 'pendingApprovals', 'employee'));
+            )
+            ->where('approval_stage', 'pending_line_manager')
+            ->count();
     }
 }
