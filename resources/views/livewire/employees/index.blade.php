@@ -2,12 +2,12 @@
 
 <div>
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center flex-wrap  justify-between mb-6">
         <div>
             <flux:heading size="xl">Employees</flux:heading>
             <flux:subheading>Manage all staff records</flux:subheading>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
             <flux:button wire:click='downloadTemplate' icon="arrow-down-tray" variant="ghost" size="sm">
                 Template
             </flux:button>

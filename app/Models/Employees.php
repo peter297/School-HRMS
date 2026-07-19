@@ -38,6 +38,7 @@ class Employees extends Model
         'employment_status',
         'date_of_birth',
         'user_id',
+        'line_manager_id',
         'age',
         'years_of_employment',
     ];
