@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} — Staff Portal</title>
+    {{-- <meta charset="UTF-8"> --}}
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
+    {{-- <title>{{ config('app.name') }} — Staff Portal</title> --}}
+    @include('partials.head')
     @fluxAppearance
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -61,8 +62,11 @@
 
     <flux:spacer />
 
-    <div class="text-right">
-        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 leading-tight">
+    <div class="text-right flex items-center">
+        <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle"
+            aria-label="Toggle dark mode" />
+            <div>|</div>
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 leading-tight ml-2">
             {{ auth()->user()->name }}
         </p>
     </div>

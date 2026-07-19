@@ -21,6 +21,9 @@ jobs:
     - name: 🔨 Install Composer Dependencies
       run: composer install --no-dev --optimize-autoloader
 
+    - name: Link users to employees
+      run: php artisan app:link-users-to-employees
+
     - name: 📦 Compile Assets (Vite)
       run: |
         npm install

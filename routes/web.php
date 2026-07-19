@@ -15,6 +15,7 @@ use App\Livewire\Time\Incidents;
 use App\Livewire\Time\Movements;
 // use App\Models\Schedules;
 use App\Livewire\Teachers\Dashboard as TeacherDashboard;
+use App\Livewire\Users\LinkEmpolyees;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -51,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
-  
+
     // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
 
@@ -77,6 +78,10 @@ Route::middleware('auth')->group(function () {
         // Route::get('/time/schedules', Schedules::class)->name('time.schedules');
 
 
+    });
+
+    Route::middleware(['role:super_admin'])->group(function() {
+        Route::get('/users/link-employees', LinkEmpolyees::class)->name('users.link-employees');
     });
 });
 

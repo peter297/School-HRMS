@@ -71,6 +71,13 @@
             </flux:navlist.item>
             @endif --}}
 
+            @if(auth()->user()->isSuperAdmin())
+            <flux:navlist.item icon="link" href="{{ route('users.link-employees') }}"
+                :current="request()->routeIs('users.link-employees')">
+                Link accounts
+            </flux:navlist.item>
+            @endif
+
 
         </flux:navlist>
 
