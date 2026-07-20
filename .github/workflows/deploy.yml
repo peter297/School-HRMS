@@ -22,7 +22,7 @@ jobs:
       run: composer install --no-dev --optimize-autoloader
 
     - name: 🔗 Link users to employees
-      run: php artisan hrms:link-users
+      run: php artisan app:link-users
 
     - name: 📦 Compile Assets (Vite)
       run: |
