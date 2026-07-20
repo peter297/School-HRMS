@@ -5,6 +5,20 @@ on:
     branches:
       - main # Triggers the deploy whenever you push to the main branch
 
+services:
+  mysql:
+    image: mysql:8.0
+    env:
+      MYSQL_DATABASE: ${{secrets.DB_USERNAME}}
+      MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}
+    ports:
+      - 3306:3306
+    options: >-
+      --health-cmd="mysqladmin ping"
+      --health-interval=10s
+      --health-timeout=5s
+      --health-retries=5
+
 jobs:
   web-deploy:
     name: 🎉 Deploy
