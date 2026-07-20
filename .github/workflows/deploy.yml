@@ -5,57 +5,85 @@ on:
     branches:
       - main # Triggers the deploy whenever you push to the main branch
 
-
-
-jobs: 
+jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
+
     services:
-        mysql:
-          image: mysql:8.0
+      mysql:
+        image: mysql:8.0
         env:
-          MYSQL_DATABASE: ${{secrets.DB_USERNAME}}
-          MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}
+          MYSQL_DATABASE: school-hrms
+          MYSQL_ROOT_PASSWORD: root
         ports:
-             - 3306:3306
+          - 3306:3306
         options: >-
-              --health-cmd="mysqladmin ping"
-              --health-interval=10s
-               --health-timeout=5s
-              --health-retries=5
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
-     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
 
-    - name: ⚙️ Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.4'
+      - name: ⚙️ Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
 
-    - name: 🔨 Install Composer Dependencies
-      run: composer install --no-dev --optimize-autoloader
+      - name: 🔨 Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
 
-    - name: 🔗 Link users to employees
-      run: php artisan app:link-users
+      - name: 📝 Prepare environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: school-hrms
+          DB_USERNAME: root
+          DB_PASSWORD: root
 
-    - name: 📦 Compile Assets (Vite)
-      run: |
-        npm install
-        npm run build
+      - name: 🗄️ Run migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: school-hrms
+          DB_USERNAME: root
+          DB_PASSWORD: root
 
-    - name: 📂 Sync Files to cPanel via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        # Exclude environment files and local nodes so you don't overwrite server configs
-        dangerous-clean-ssl: true
-        timeout: 600000
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.env
+      - name: 🔗 Link users to employees
+        run: php artisan app:link-users
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: school-hrms
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: 📦 Compile Assets (Vite)
+        run: |
+          npm install
+          npm run build
+
+      - name: 📂 Sync Files to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Exclude environment files and local nodes so you don't overwrite server configs
+          dangerous-clean-ssl: true
+          timeout: 600000
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.env
