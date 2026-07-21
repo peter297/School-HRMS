@@ -58,15 +58,15 @@ jobs:
       #     DB_USERNAME: root
       #     DB_PASSWORD: root
 
-      - name: 🔗 Link users to employees
-        run: php artisan app:link-users
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: ${{secrets.DB_NAME}}
-          DB_USERNAME: ${{secrets.DB_USERNAME}}
-          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      # - name: 🔗 Link users to employees
+      #   run: php artisan app:link-users
+      #   env:
+      #     DB_CONNECTION: mysql
+      #     DB_HOST: 127.0.0.1
+      #     DB_PORT: 3306
+      #     DB_DATABASE: ${{secrets.DB_NAME}}
+      #     DB_USERNAME: ${{secrets.DB_USERNAME}}
+      #     DB_PASSWORD: ${{secrets.DB_PASSWORD}}
 
       - name: 📦 Compile Assets (Vite)
         run: |
