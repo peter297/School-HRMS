@@ -26,7 +26,7 @@ class LinkEmpolyees extends Component
 
     public string $createPassword = '';
 
-    public string $createRole = 'staff';
+    public string $createRole = 'staff_admin';
 
     // Link Employees to Users
     public bool $showLinkModal = false;
@@ -44,7 +44,7 @@ class LinkEmpolyees extends Component
         $this->createEmployeeId = $employeeId;
         $this->createEmail = $employee->email ?? '';
         $this->createPassword = '';
-        $this->createRole = 'staff';
+        $this->createRole = 'staff_admin';
         $this->showCreateModal = true;
     }
 
@@ -58,7 +58,7 @@ class LinkEmpolyees extends Component
         $this->validate([
             'createEmail' => 'required|email|unique:users,email',
             'createPassword' => 'required|min:8',
-            'createRole' => 'required|in:staff,hr_admin,super_admin',
+            'createRole' => 'required|in:staff_admin,hr_admin,super_admin,teacher',
         ]);
 
         $user = User::create([
@@ -70,7 +70,7 @@ class LinkEmpolyees extends Component
 
         DB::table('employees')
             ->where('id', $this->createEmployeeId)
-            ->update(['user_id', $user->id]);
+            ->update(['user_id' => $user->id]);
 
         $this->showCreateModal = false;
         session()->flash('success', 'User created and linked successfully. ');
@@ -107,9 +107,7 @@ class LinkEmpolyees extends Component
     public function render()
     {
         $employees = Employees::with('user')
-            ->when($this->search, fn($q) =>
-             $q->where(fn($q) =>
-             $q->where('first_name', 'like', "%{$this->search}%")
+            ->when($this->search, fn($q) => $q->where(fn($q) => $q->where('first_name', 'like', "%{$this->search}%")
              ->orWhere('last_name', 'like', "%{$this->search}%")
              ->orWhere('staff_number', 'like', "%{$this->search}%")
              ->orWhere('email', 'like', "%{$this->search}%")
@@ -121,10 +119,7 @@ class LinkEmpolyees extends Component
 
              $unlinkedCount = Employees::whereNull('user_id')->count();
 
-             $availableUsers = User::whereNotIn(
-                'id',
-                Employees::whereNotNull('user_id')->pluck('user_id')
-             )
+             $availableUsers = User::whereNotIn('id', Employees::whereNotNull('user_id')->pluck('user_id'))
              ->orderBy('name')
              ->get();
 

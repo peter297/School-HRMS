@@ -167,9 +167,10 @@
             @enderror
 
             <flux:select wire:model="createRole" label="Role">
-                <flux:select.option value="staff">Staff</flux:select.option>
+                <flux:select.option value="staff_admin">Staff</flux:select.option>
                 <flux:select.option value="hr_admin">HR Admin</flux:select.option>
                 <flux:select.option value="super_admin">Super Admin</flux:select.option>
+                <flux:select.option value="teacher">Teacher</flux:select.option>
             </flux:select>
 
             <flux:callout variant="info" icon="information-circle">

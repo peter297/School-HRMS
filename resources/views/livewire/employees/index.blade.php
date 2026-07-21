@@ -91,7 +91,7 @@
 
         <div class="flex items-center gap-3 mb-3 px-1">
             <span class="text-sm text-zinc-500">
-                {{ count($selectedIds) }} employess(s) selected
+                {{ count($selectedIds) }} employees(s) selected
             </span>
             <flux:button wire:click="$set('selectedIds', [])" size="sm" variant="ghost">
                 Clear Selection
@@ -150,9 +150,9 @@
                     <div class="font-medium text-zinc-900 dark:text-zinc-100">{{ $employee->full_name }}</div>
                     <div class="text-xs text-zinc-400">{{ $employee->email }}</div>
                 </td>
-                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->branch_label }}</td>
-                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->gender }}</td>
-                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->staff_type }}</td>
+                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ ucfirst($employee->branch_label) }}</td>
+                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ ucfirst($employee->gender) }}</td>
+                <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ ucfirst($employee->staff_type) }}</td>
                 <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">{{ $employee->job_title ?? '—' }}</td>
                 <td class="px-4 py-3">
                    @php
