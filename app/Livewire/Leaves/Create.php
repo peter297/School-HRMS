@@ -81,7 +81,8 @@ class Create extends Component
         if($status === 'approved'){
             $service->approve($leave, auth()->id());
         }
-
+        
+        $service->notifySubmitted($leave);
         session()->flash('message', 'Leave request submitted successfully.');
         $this->redirect(route('leaves.index'));
 

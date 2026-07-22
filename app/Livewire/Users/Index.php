@@ -23,12 +23,19 @@ class Index extends Component
 
     public string $userRole = '';
 
+    public bool $showDeleteModal = false;
+
 
     public int $userId = 0;
 
     public function updatingSearch(): void
     {
         $this->resetPage();
+    }
+
+    public function openDeleteModal()
+    {
+        $this->showDeleteModal = true;
     }
 
     public function openEditModal(int $userId)
@@ -67,6 +74,19 @@ class Index extends Component
 
         $this->showEditModal = false;
         session()->flash('success', 'User details have been updated successfully');
+    }
+
+    public function deleteUser(int $userDel): void{
+        $user = User::findOrFail($userDel);
+
+        if(in_array($user->role, ['teacher', 'staff_admin', 'admin'])){
+            $user->delete();
+        }else{
+            $this->addError('error', 'This user cannot be deleted');
+        }
+        
+        $this->showDeleteModal = false;
+        session()->flash('success', 'User has been deleted successfully');
     }
 
     #[Layout('layouts.app')]

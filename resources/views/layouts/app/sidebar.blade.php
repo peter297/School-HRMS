@@ -14,11 +14,12 @@
             <div class="flex flex-row justify-between h-10 w-10  rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2 mb-2">
                 <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Alameen Academy HRMS') }} Logo"
                     class="h-10 w-auto" />
-
+   
             </div>
             <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
         </div>
+       
         {{-- @if(auth()->check())
         @if(auth()->user()->isSuperAdmin()) --}}
 

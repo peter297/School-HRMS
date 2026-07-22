@@ -55,6 +55,18 @@
                                 <flux:button wire:click="openEditModal({{ $user->id }})" size="sm"
                                     variant="ghost" icon="pencil-square"></flux:button>
                             </td>
+
+                            @if(in_array($user->role, ['teacher', 'staff_admin', 'admin']))
+                            <td class="py-3 px-3">
+                            
+                                  <flux:button  e="sm" wire:click='openDeleteModal'
+                                    variant="ghost" icon="trash"></flux:button>
+                            
+                                {{-- <flux:button wire:click="deleteUser({{ $user->id }})" 
+                                wire:confirm='Are you Sure you want to delete {{ $user->name }}' size="sm"
+                                    variant="ghost" icon="trash"></flux:button> --}}
+                            </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
@@ -115,3 +127,29 @@
 
 
     </flux:modal>
+
+    <flux:modal wire:model='showDeleteModal' class="min-w-[22rem]">
+    <div class="space-y-6">
+        <div>
+            <flux:heading size="lg">Delete User?</flux:heading>
+            <flux:text class="mt-2">
+                You're about to delete this user.<br>
+                This action cannot be reversed.
+            </flux:text>
+        </div>
+
+        <div class="flex gap-2">
+            <flux:spacer />
+
+            <!-- Close Button -->
+            <flux:modal.close>
+                <flux:button variant="ghost">Cancel</flux:button>
+            </flux:modal.close>
+
+            <!-- Action Button -->
+            <flux:button wire:click="deleteUser({{ $user->id }})" variant="danger">
+                Delete
+            </flux:button>
+        </div>
+    </div>
+</flux:modal>

@@ -13,9 +13,11 @@ class LeaveService
     /**
      * Create a new class instance.
      */
-    public function __construct()
+    public function __construct(
+        private LeaveNotificationService $notify
+    )
     {
-        //
+        
     }
 
     // Count working Days (Mon-Fri) between two date inclusive
@@ -65,6 +67,12 @@ public function hasBalance(int $employeeId, int $leaveTypeId, int $days, int $ye
 {
    $balance = $this->getOrCreateBalance($employeeId, $leaveTypeId, $year);
    return $balance->remaining_days >= $days;
+}
+
+public function notifySubmitted(Leaves $leave): void
+{
+    $leave->load(['leaveType', 'employee']);
+    $this->notify->notifySubmitted($leave);
 }
 
 public function approve(Leaves $leave, int $approvedBy){
@@ -152,6 +160,8 @@ public function hrOverride(Leaves $leave, int $actedBy, string $notes): void{
                 'approved_at' => now(),
                 'rejection_reason' => null,
             ]);
+
+            $this->notify->notifyApproved($leave->fresh(['leaveType', 'approvedBy', 'approvals', 'employee']));
 }
 
 public function hrApprove(Leaves $leave, int $actedBy, string $notes = ''): void{
@@ -178,6 +188,8 @@ public function hrApprove(Leaves $leave, int $actedBy, string $notes = ''): void
         'approved_by' => $actedBy,
         'approved_at' => now(),
     ]);
+
+    $this->notify->notifyApproved($leave->fresh(['leaveType', 'approvedBy', 'approvals', 'employee']));
 }
 
 // Hr Rejects the Leave
@@ -198,6 +210,11 @@ public function hrReject(Leaves $leave, int $actedBy, string $notes): void{
         'status' => 'rejected',
         'rejection_reason' => $notes,
     ]);
+
+     $this->notify->notifyRejected(
+            $leave->fresh(['leaveType', 'employee']),
+            'HR'
+        );
 }
 
 /**
