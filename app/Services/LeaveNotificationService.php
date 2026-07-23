@@ -35,7 +35,16 @@ class LeaveNotificationService
 
     private function send(Leaves $leave, $mailable): void
     {
-        $employee = $leave->employee;
+
+        Log::info('DEBUG leave id: ' . $leave->id);
+        Log::info('DEBUG employee relation: ' . ($leave->employee ? 'loaded' : 'NULL'));
+        Log::info('DEBUG employee_id raw: ' . $leave->employee_id);
+
+
+        $employee = $leave->employee
+            ?? \App\Models\Employees::find($leave->employee_id);
+
+        Log::info('DEBUG after fallback: ' . ($employee ? $employee->email : 'STILL NULL'));
 
         if (!$employee) {
             Log::warning("LeaveNotification: No employee found for leave ID {$leave->id}");
