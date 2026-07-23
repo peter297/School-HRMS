@@ -14,13 +14,11 @@ class LeaveNotificationService
     /**
      * Create a new class instance.
      */
-    public function __construct()
-    {
-        
-    }
+    public function __construct() {}
 
-    public function notifySubmitted(Leaves $leave): void{
-            $this->send($leave, new LeaveSubmitted($leave));
+    public function notifySubmitted(Leaves $leave): void
+    {
+        $this->send($leave, new LeaveSubmitted($leave));
     }
 
     public function notifyApproved(Leaves $leave): void
@@ -29,24 +27,36 @@ class LeaveNotificationService
         $this->send($leave, new LeaveApprovedByHr($leave));
     }
 
-    public function notifyRejected(Leaves $leave, string $rejectedBy): void{
+    public function notifyRejected(Leaves $leave, string $rejectedBy): void
+    {
         $leave->load(['leaveType', 'employee']);
         $this->send($leave, new LeaveRejected($leave, $rejectedBy));
     }
 
     private function send(Leaves $leave, $mailable): void
     {
-        $email = $leave->employee?->email ?? $leave->employee?->user?->email;
+        $employee = $leave->employee;
 
-        if($email){
-            Log::warning("LeaveNotofication: No email found for employee ID {$leave->employee_id}");
+        if (!$employee) {
+            Log::warning("LeaveNotification: No employee found for leave ID {$leave->id}");
+            return;
+        }
+        $email = null;
+
+        if (!empty($employee->email)) {
+            $email = $employee->email;
+        } elseif ($employee->user && !empty($employee->user->email)) {
+            $email = $employee->user->email;
+        }
+
+        if ($email) {
+            Log::warning("LeaveNotification: No email found for employee ID {$leave->employee_id}");
             return;
         }
 
-        try{
+        try {
             Mail::to($email)->send($mailable);
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             Log::error("LeaveNotification: Failed to send to {$email} — " . $e->getMessage());
         }
     }
