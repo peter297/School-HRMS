@@ -29,7 +29,7 @@ class LeaveSubmitted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Leave Applivation Submitted - ' . $this->leave->leaveType->name,
+            subject: 'Leave Application Submitted - ' . $this->leave->leaveType->name,
         );
     }
 

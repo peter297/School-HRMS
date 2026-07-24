@@ -39,7 +39,7 @@ class LeaveRejected extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.leave.rejected',
+            view: 'emails.leave.rejected',
         );
     }
 
