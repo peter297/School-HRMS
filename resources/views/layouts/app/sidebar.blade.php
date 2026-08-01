@@ -108,6 +108,7 @@
             {{-- <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ auth()->user()->name }}</p> --}}
 
             <div class="grid flex-1 text-start text-sm leading-tight">
+                
                 <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
                 <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
 
@@ -125,6 +126,9 @@
                 </div>
 
             </div>
+
+
+            
             {{-- <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="text-xs text-zinc-400 hover:text-red-500 mt-1">Sign out</button>

@@ -55,28 +55,31 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function updatingFilterType(): void{
+    public function updatingFilterType(): void
+    {
         $this->resetPage();
     }
 
-    public function updatingFilterBranch(): void{
+    public function updatingFilterBranch(): void
+    {
         $this->resetPage();
     }
 
-    public function updatedSelectAll(bool $value): void{
-        if($value){
+    public function updatedSelectAll(bool $value): void
+    {
+        if ($value) {
             $this->selectedIds = $this->getFilteredQuery()
                 ->pluck('id')
                 ->map(fn($id) => (string) $id)
                 ->toArray();
-        }else{
+        } else {
             $this->selectedIds = [];
         }
     }
 
 
 
-    public function sort(string $column):void
+    public function sort(string $column): void
     {
         if ($this->sortBy === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -96,44 +99,48 @@ class Index extends Component
 
     // Import Employee Excel file
 
-    public function openImportModal(): void{
+    public function openImportModal(): void
+    {
         $this->importFile = null;
         $this->importErrors = [];
         $this->importedCount = null;
         $this->showImportModal = true;
     }
 
-    public function downloadTemplate(): BinaryFileResponse{
+    public function downloadTemplate(): BinaryFileResponse
+    {
         return Excel::download(new EmployeesImportTemplate(), 'employee_import_template.xlsx');
     }
 
     public function importEmployees(): void
-{
-    $this->validate([
-        'importFile' => 'required|file|mimes:xlsx,xls|max:5120',
-    ]);
+    {
+        $this->validate([
+            'importFile' => 'required|file|mimes:xlsx,xls|max:5120',
+        ]);
 
-    $this->importErrors = [];
+        $this->importErrors = [];
 
-    try {
-        $import = new EmployeesImport();
-        Excel::import($import, $this->importFile->getRealPath());
+        try {
+            $import = new EmployeesImport();
+            Excel::import($import, $this->importFile->getRealPath());
 
-        $this->importErrors = $import->getErrors();
-        $imported           = $import->getImportedCount();
+            $this->importErrors = $import->getErrors();
+            $imported           = $import->getImportedCount();
 
-        session()->flash('success', "Import complete. {$imported} employee(s) added." .
-            (count($this->importErrors) > 0 ? ' ' . count($this->importErrors) . ' row(s) skipped.' : '')
-        );
+            session()->flash(
+                'success',
+                "Import complete. {$imported} employee(s) added." .
+                    (count($this->importErrors) > 0 ? ' ' . count($this->importErrors) . ' row(s) skipped.' : '')
+            );
 
-        $this->showImportModal = false;
-
-    } catch (\Exception $e) {
-        $this->importErrors[] = 'Import failed: ' . $e->getMessage();
+            $this->showImportModal = false;
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Import failed: ' . $e->getMessage();
+        }
     }
-}
 
-    public function exportSelected(): BinaryFileResponse{
+    public function exportSelected(): BinaryFileResponse
+    {
         $ids = !empty($this->selectedIds)
             ? array_map('intval', $this->selectedIds)
             : null;
@@ -151,20 +158,42 @@ class Index extends Component
         );
     }
 
-    public function getFilteredQuery(){
+    public function getFilteredQuery()
+    {
+
+        $keywords = array_filter(explode(' ', $this->search));
+
         return Employees::query()
-            ->when($this->search, fn($q) =>
-                $q->where(fn($q) =>
-                    $q->where('first_name',    'like', "%{$this->search}%")
-                      ->orWhere('last_name',   'like', "%{$this->search}%")
-                      ->orWhere('staff_number','like', "%{$this->search}%")
-                      ->orWhere('email',       'like', "%{$this->search}%")
-                )
-            )
-            ->when($this->filterType,     fn($q) => $q->where('staff_type', $this->filterType))
-            ->when($this->filterDivision, fn($q) => $q->where('division',   $this->filterDivision))
-            ->when($this->filterStatus,   fn($q) => $q->where('employment_status',     $this->filterStatus))
-            ->when($this->filterBranch,   fn($q) => $q->where('branch',     $this->filterBranch));
+            ->when(!empty($keywords), function ($q) use ($keywords) {
+                $q->where(function ($sub) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $sub->where(function ($term) use ($word) {
+                            $term->where('first_name', 'like', "%{$word}%")
+                                ->orWhere('last_name', 'like', "%{$word}%")
+                                ->orWhere('staff_number', 'like', "%{$word}%")
+                                ->orWhere('email', 'like', "%{$word}%");
+                        });
+                    }
+                });
+            })
+            ->when($this->filterType, fn($q) => $q->where('staff_type', $this->filterType))
+            ->when($this->filterDivision, fn($q) => $q->where('division', $this->filterDivision))
+            ->when($this->filterStatus, fn($q) => $q->where('employment_status', $this->filterStatus))
+            ->when($this->filterBranch, fn($q) => $q->where('branch', $this->filterBranch));
+
+        // return Employees::query()
+        //     ->when($this->search, fn($q) =>
+        //         $q->where(fn($q) =>
+        //             $q->where('first_name',    'like', "%{$this->search}%")
+        //               ->orWhere('last_name',   'like', "%{$this->search}%")
+        //               ->orWhere('staff_number','like', "%{$this->search}%")
+        //               ->orWhere('email',       'like', "%{$this->search}%")
+        //         )
+        //     )
+        //     ->when($this->filterType,     fn($q) => $q->where('staff_type', $this->filterType))
+        //     ->when($this->filterDivision, fn($q) => $q->where('division',   $this->filterDivision))
+        //     ->when($this->filterStatus,   fn($q) => $q->where('employment_status',     $this->filterStatus))
+        //     ->when($this->filterBranch,   fn($q) => $q->where('branch',     $this->filterBranch));
     }
 
 

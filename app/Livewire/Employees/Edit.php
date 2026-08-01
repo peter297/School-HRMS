@@ -62,6 +62,7 @@ class Edit extends Component
             'gender'            => 'nullable|in:male,female,other',
             'national_id'       => 'nullable|string|max:50',
             'employment_status' => 'required|in:active,inactive,on_leave',
+            'line_manager_id'   => 'nullable|exists:employees,id',
         ];
     }
 
@@ -82,6 +83,7 @@ class Edit extends Component
             'gender'            => $this->gender ?: null,
             'national_id'       => $this->national_id ?: null,
             'employment_status' => $this->employment_status,
+            'line_manager_id'   => $this->line_manager_id ?: null,
         ]);
 
         session()->flash('success', 'Employee updated successfully.');
