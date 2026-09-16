@@ -14,18 +14,19 @@
             <div class="flex flex-row justify-between h-10 w-10  rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2 mb-2">
                 <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Alameen Academy HRMS') }} Logo"
                     class="h-10 w-auto" />
-   
+
             </div>
             <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Alameen Academy HRMS</p>
             <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ auth()->user()->role }}</p>
         </div>
-       
-        {{-- @if(auth()->check())
-        @if(auth()->user()->isSuperAdmin()) --}}
+
+        {{-- @if (auth()->check())
+        @if (auth()->user()->isSuperAdmin()) --}}
 
         <flux:navlist class="px-2">
 
-            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">
+            <flux:navlist.item icon="home" href="{{ route('dashboard') }}"
+                :current="request()->routeIs('dashboard')">
                 Dashboard
             </flux:navlist.item>
 
@@ -63,22 +64,32 @@
                 </flux:navlist.item>
             </flux:navlist.group>
 
+            {{-- Add after contracts navlist item --}}
+            <flux:navlist.group heading="Turnover" expandable>
+                <flux:navlist.item icon="user-minus" href="{{ route('resignations.index') }}"
+                    :current="request()->routeIs('resignations.*')">
+                    Resignations
+                </flux:navlist.item>
+                <flux:navlist.item icon="x-circle" href="{{ route('terminations.index') }}"
+                    :current="request()->routeIs('terminations.*')">
+                    Terminations
+                </flux:navlist.item>
+            </flux:navlist.group>
 
 
-           
 
-            @if(auth()->user()->isSuperAdmin())
-            <flux:navlist.item icon="link" href="{{ route('users.link-employees') }}"
-                :current="request()->routeIs('users.link-employees')">
-                Link accounts
-            </flux:navlist.item>
+            @if (auth()->user()->isSuperAdmin())
+                <flux:navlist.item icon="link" href="{{ route('users.link-employees') }}"
+                    :current="request()->routeIs('users.link-employees')">
+                    Link accounts
+                </flux:navlist.item>
             @endif
 
-            @if(auth()->user()->isSuperAdmin())
-            <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
-                :current="request()->routeIs('users.index')">
-                User management
-            </flux:navlist.item>
+            @if (auth()->user()->isSuperAdmin())
+                <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
+                    :current="request()->routeIs('users.index')">
+                    User management
+                </flux:navlist.item>
             @endif
 
 
@@ -108,7 +119,7 @@
             {{-- <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ auth()->user()->name }}</p> --}}
 
             <div class="grid flex-1 text-start text-sm leading-tight">
-                
+
                 <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
                 <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
 
@@ -128,7 +139,7 @@
             </div>
 
 
-            
+
             {{-- <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="text-xs text-zinc-400 hover:text-red-500 mt-1">Sign out</button>
@@ -251,9 +262,9 @@
     <flux:toast position="top end" />
 
     @persist('toast')
-    <flux:toast.group>
-        <flux:toast />
-    </flux:toast.group>
+        <flux:toast.group>
+            <flux:toast />
+        </flux:toast.group>
     @endpersist
     @fluxAppearance
     @fluxScripts

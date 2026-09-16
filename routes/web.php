@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
     //     };
     // })->middleware('auth')->name('login.redirect');
 
-     Route::get('/login-redirect', function () {
-        return match(auth()->user()->role) {
+    Route::get('/login-redirect', function () {
+        return match (auth()->user()->role) {
             'super_admin', 'hr_admin' => redirect()->route('dashboard'),
             default                   => redirect()->route('staff.dashboard'),
         };
@@ -78,11 +78,21 @@ Route::middleware('auth')->group(function () {
 
         // Route::get('/time/schedules', Schedules::class)->name('time.schedules');
 
-        
+        // Resignation
+        Route::get('/resignations/report', \App\Livewire\Resignations\Report::class)->name('resignations.report');
+        Route::get('/resignations', \App\Livewire\Resignations\Index::class)->name('resignations.index');
+        Route::get('/resignations/create', \App\Livewire\Resignations\Create::class)->name('resignations.create');
+        Route::get('/resignations/{resignation}', \App\Livewire\Resignations\Show::class)->name('resignations.show');
 
+        // Termination
+        Route::get('/terminations/report', \App\Livewire\Terminations\Report::class)->name('terminations.report');
+        Route::get('/terminations', \App\Livewire\Terminations\Index::class)->name('terminations.index');
+        Route::get('/terminations/create', \App\Livewire\Terminations\Create::class)->name('terminations.create');
+        Route::get('/terminations/{termination}', \App\Livewire\Terminations\Show::class)->name('terminations.show');
+       
     });
 
-    Route::middleware(['role:super_admin'])->group(function() {
+    Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/users/link-employees', LinkEmpolyees::class)->name('users.link-employees');
         Route::get('/users', UsersIndex::class)->name('users.index');
     });
