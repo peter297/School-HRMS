@@ -12,9 +12,8 @@ use App\Livewire\Staff\Leaves\Index as LeavesIndex;
 use App\Livewire\Time\Attendance;
 use App\Livewire\Time\Import;
 use App\Livewire\Time\Incidents;
-use App\Livewire\Time\Movements;
 // use App\Models\Schedules;
-use App\Livewire\Teachers\Dashboard as TeacherDashboard;
+use App\Livewire\Time\Movements;
 use App\Livewire\Users\Index as UsersIndex;
 use App\Livewire\Users\LinkEmpolyees;
 use Illuminate\Support\Facades\Route;
@@ -24,8 +23,6 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/', fn() => redirect()->route('login'));
-
-
 
 Route::middleware('auth')->group(function () {
 
@@ -39,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/login-redirect', function () {
         return match (auth()->user()->role) {
             'super_admin', 'hr_admin' => redirect()->route('dashboard'),
-            default                   => redirect()->route('staff.dashboard'),
+            default => redirect()->route('staff.dashboard'),
         };
     })->name('login.redirect');
 
@@ -53,7 +50,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
-
     // HR Admin and Super Admin Routes
     Route::middleware('role:hr_admin,super_admin')->group(function () {
 
@@ -65,11 +61,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/contracts/create', \App\Livewire\Contracts\Create::class)->name('contracts.create');
         Route::get('/contracts/{contract}/edit', \App\Livewire\Contracts\Edit::class)->name('contracts.edit');
 
-
-
         Route::get('/leaves', Index::class)->name('leaves.index');
-        Route::get('/leaves/create',      \App\Livewire\Leaves\Create::class)->name('leaves.create');
-        Route::get('/leaves/{leave}',     \App\Livewire\Leaves\Show::class)->name('leaves.show');
+        Route::get('/leaves/create', \App\Livewire\Leaves\Create::class)->name('leaves.create');
+        Route::get('/leaves/{leave}', \App\Livewire\Leaves\Show::class)->name('leaves.show');
 
         Route::get('/time/import', Import::class)->name('time.import');
         Route::get('/time/attendance', Attendance::class)->name('time.attendance');
@@ -89,7 +83,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/terminations', \App\Livewire\Terminations\Index::class)->name('terminations.index');
         Route::get('/terminations/create', \App\Livewire\Terminations\Create::class)->name('terminations.create');
         Route::get('/terminations/{termination}', \App\Livewire\Terminations\Show::class)->name('terminations.show');
-       
+
+        // Casual & Intern
+        Route::get('/casual-interns', \App\Livewire\CasualInterns\Index::class)->name('casual-interns.index');
+        Route::get('/casual-interns/create', \App\Livewire\CasualInterns\Create::class)->name('casual-interns.create');
+        Route::get('/casual-interns/{casualIntern}', \App\Livewire\CasualInterns\Show::class)->name('casual-interns.show');
+        Route::get('/casual-interns/{casualIntern}/edit', \App\Livewire\CasualInterns\Edit::class)->name('casual-interns.edit');
+
     });
 
     Route::middleware(['role:super_admin'])->group(function () {
