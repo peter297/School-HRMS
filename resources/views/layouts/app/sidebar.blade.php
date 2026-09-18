@@ -25,7 +25,8 @@
 
         <flux:navlist class="px-2">
 
-            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">
+            <flux:navlist.item icon="home" href="{{ route('dashboard') }}"
+                :current="request()->routeIs('dashboard')">
                 Dashboard
             </flux:navlist.item>
 
@@ -80,20 +81,25 @@
                 Casuals &amp; Interns
             </flux:navlist.item>
 
+            <flux:navlist.item icon="shield-exclamation" href="{{ route('disciplinary.index') }}"
+                :current="request()->routeIs('disciplinary.*')">
+                Disciplinary
+            </flux:navlist.item>
+
 
 
             @if (auth()->user()->isSuperAdmin())
-            <flux:navlist.item icon="link" href="{{ route('users.link-employees') }}"
-                :current="request()->routeIs('users.link-employees')">
-                Link accounts
-            </flux:navlist.item>
+                <flux:navlist.item icon="link" href="{{ route('users.link-employees') }}"
+                    :current="request()->routeIs('users.link-employees')">
+                    Link accounts
+                </flux:navlist.item>
             @endif
 
             @if (auth()->user()->isSuperAdmin())
-            <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
-                :current="request()->routeIs('users.index')">
-                User management
-            </flux:navlist.item>
+                <flux:navlist.item icon="cog-6-tooth" href="{{ route('users.index') }}"
+                    :current="request()->routeIs('users.index')">
+                    User management
+                </flux:navlist.item>
             @endif
 
 
@@ -266,9 +272,9 @@
     <flux:toast position="top end" />
 
     @persist('toast')
-    <flux:toast.group>
-        <flux:toast />
-    </flux:toast.group>
+        <flux:toast.group>
+            <flux:toast />
+        </flux:toast.group>
     @endpersist
     @fluxAppearance
     @fluxScripts

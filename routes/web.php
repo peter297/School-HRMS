@@ -90,6 +90,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/casual-interns/{casualIntern}', \App\Livewire\CasualInterns\Show::class)->name('casual-interns.show');
         Route::get('/casual-interns/{casualIntern}/edit', \App\Livewire\CasualInterns\Edit::class)->name('casual-interns.edit');
 
+
+         // PDF downloads
+        Route::get(
+            '/disciplinary/{disciplinaryCase}/document/{document}/pdf',
+            \App\Livewire\Disciplinary\DownloadPdf::class
+        )->name('disciplinary.pdf');
+
+        // Disciplinary
+        Route::get('/disciplinary', \App\Livewire\Disciplinary\Index::class)->name('disciplinary.index');
+        Route::get('/disciplinary/create', \App\Livewire\Disciplinary\Create::class)->name('disciplinary.create');
+        Route::get('/disciplinary/{disciplinaryCase}', \App\Livewire\Disciplinary\Show::class)->name('disciplinary.show');
+
+       
     });
 
     Route::middleware(['role:super_admin'])->group(function () {
