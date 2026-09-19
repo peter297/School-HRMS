@@ -86,6 +86,11 @@
                 Disciplinary
             </flux:navlist.item>
 
+            <flux:navlist.item icon="star" href="{{ route('appraisals.index') }}"
+                :current="request()->routeIs('appraisals.*')">
+                Appraisals
+            </flux:navlist.item>
+
 
 
             @if (auth()->user()->isSuperAdmin())

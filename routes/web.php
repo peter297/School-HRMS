@@ -106,16 +106,16 @@ Route::middleware('role:hr_admin,super_admin')->group(function () {
     Route::get('/disciplinary/{disciplinaryCase}', \App\Livewire\Disciplinary\Show::class)->name('disciplinary.show');
 
     // Appraisals — HR manages
-    //     Route::get('/appraisals', \App\Livewire\Appraisals\Index::class)->name('appraisals.index');
-    //     Route::get('/appraisals/create', \App\Livewire\Appraisals\Create::class)->name('appraisals.create');
-    //     Route::get('/appraisals/{appraisal}', \App\Livewire\Appraisals\Show::class)->name('appraisals.show');
-    //     Route::get('/appraisals/{appraisal}/pdf', \App\Livewire\Appraisals\DownloadPdf::class)->name('appraisals.pdf');
-    // });
+        Route::get('/appraisals', \App\Livewire\Appraisals\Index::class)->name('appraisals.index');
+        Route::get('/appraisals/create', \App\Livewire\Appraisals\Create::class)->name('appraisals.create');
+        Route::get('/appraisals/{appraisal}', \App\Livewire\Appraisals\Show::class)->name('appraisals.show');
+        Route::get('/appraisals/{appraisal}/pdf', \App\Livewire\Appraisals\DownloadPdf::class)->name('appraisals.pdf');
+    });
 
     Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/users/link-employees', LinkEmpolyees::class)->name('users.link-employees');
         Route::get('/users', UsersIndex::class)->name('users.index');
     });
-});
+
 
 require __DIR__ . '/settings.php';

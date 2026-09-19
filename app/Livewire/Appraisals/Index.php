@@ -1,9 +1,10 @@
 <?php
-// app/Livewire/Appraisals/Index.php
+
 
 namespace App\Livewire\Appraisals;
 
 use App\Models\Appraisal;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,6 +24,7 @@ class Index extends Component
 
     public function updatingSearch(): void { $this->resetPage(); }
 
+    #[Layout('layouts.app')]
     public function render()
     {
         $appraisals = Appraisal::with(['employee', 'submittedBy', 'approvedBy'])
@@ -44,6 +46,6 @@ class Index extends Component
 
         return view('livewire.appraisals.index',
             compact('appraisals', 'pendingCount')
-        )->layout('components.layouts.app');
+        );
     }
 }
